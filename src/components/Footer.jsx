@@ -17,10 +17,44 @@ const EVENT_NAMES = {
   FOOTER_LINK: 'edx.bi.footer.link',
 };
 
+// CSS for logo hover effect
+const logoStyles = {
+  logoLink: {
+    position: 'relative',
+    display: 'block',
+    transition: 'transform 0.2s ease-in-out',
+  },
+  logoHoverText: {
+    position: 'absolute',
+    top: '-25px',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    color: 'white',
+    padding: '4px 8px',
+    borderRadius: '4px',
+    fontSize: '12px',
+    opacity: 0,
+    visibility: 'hidden',
+    transition: 'opacity 0.3s, visibility 0.3s',
+    whiteSpace: 'nowrap',
+  },
+  logoLinkHover: {
+    transform: 'scale(1.05)',
+  },
+  logoHoverTextVisible: {
+    opacity: 1,
+    visibility: 'visible',
+  }
+};
+
 class SiteFooter extends React.Component {
   constructor(props) {
     super(props);
     this.externalLinkClickHandler = this.externalLinkClickHandler.bind(this);
+    this.state = {
+      isLogoHovered: false,
+    };
   }
 
   externalLinkClickHandler(event) {
@@ -40,6 +74,7 @@ class SiteFooter extends React.Component {
       logo,
       intl,
     } = this.props;
+    const { isLogoHovered } = this.state;
     const showLanguageSelector = supportedLanguages.length > 0 && onLanguageSelected;
     const { config } = this.context;
 
@@ -50,15 +85,28 @@ class SiteFooter extends React.Component {
       >
         <div className="container-fluid d-flex">
           <a
+            style={{
+              ...logoStyles.logoLink,
+              ...(isLogoHovered ? logoStyles.logoLinkHover : {}),
+            }}
             className="d-block"
             href={config.LMS_BASE_URL}
             aria-label={intl.formatMessage(messages['footer.logo.ariaLabel'])}
+            title={intl.formatMessage(messages['footer.logo.hoverText'])}
+            onMouseEnter={() => this.setState({ isLogoHovered: true })}
+            onMouseLeave={() => this.setState({ isLogoHovered: false })}
           >
             <img
               style={{ maxHeight: 45 }}
               src={logo || config.LOGO_TRADEMARK_URL}
               alt={intl.formatMessage(messages['footer.logo.altText'])}
             />
+            <span style={{
+              ...logoStyles.logoHoverText,
+              ...(isLogoHovered ? logoStyles.logoHoverTextVisible : {}),
+            }}>
+              {intl.formatMessage(messages['footer.logo.hoverText'])}
+            </span>
           </a>
           <div className="flex-grow-1" />
           {showLanguageSelector && (

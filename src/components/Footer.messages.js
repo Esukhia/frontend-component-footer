@@ -151,6 +151,11 @@ const messages = defineMessages({
     defaultMessage: 'Page Footer',
     description: 'aria-label for the footer component',
   },
+  'footer.logo.hoverText': {
+    id: 'footer.logo.hoverText',
+    defaultMessage: 'Go to home',
+    description: 'Hover text for the footer logo that indicates clicking will return to home page.',
+  },
 });
 
 export default messages;
