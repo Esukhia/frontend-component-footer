@@ -26,18 +26,19 @@ const logoStyles = {
   },
   logoHoverText: {
     position: 'absolute',
-    top: '-25px',
+    top: '-30px',
     left: '50%',
     transform: 'translateX(-50%)',
     backgroundColor: 'rgba(0, 0, 0, 0.7)',
     color: 'white',
-    padding: '4px 8px',
+    padding: '6px 10px',
     borderRadius: '4px',
     fontSize: '12px',
     opacity: 0,
     visibility: 'hidden',
     transition: 'opacity 0.3s, visibility 0.3s',
     whiteSpace: 'nowrap',
+    marginBottom: '5px',
   },
   logoLinkHover: {
     transform: 'scale(1.05)',
@@ -92,7 +93,6 @@ class SiteFooter extends React.Component {
             className="d-block"
             href={config.LMS_BASE_URL}
             aria-label={intl.formatMessage(messages['footer.logo.ariaLabel'])}
-            title={intl.formatMessage(messages['footer.logo.hoverText'])}
             onMouseEnter={() => this.setState({ isLogoHovered: true })}
             onMouseLeave={() => this.setState({ isLogoHovered: false })}
           >
