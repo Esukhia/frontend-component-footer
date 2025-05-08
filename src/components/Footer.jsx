@@ -7,46 +7,17 @@ import { AppContext } from '@edx/frontend-platform/react';
 
 import messages from './Footer.messages';
 import LanguageSelector from './LanguageSelector';
+import './styles/Logo.css';
 
 ensureConfig([
   'LMS_BASE_URL',
   'LOGO_TRADEMARK_URL',
 ], 'Footer component');
 
+
+
 const EVENT_NAMES = {
   FOOTER_LINK: 'edx.bi.footer.link',
-};
-
-// CSS for logo hover effect
-const logoStyles = {
-  logoLink: {
-    position: 'relative',
-    display: 'block',
-    transition: 'transform 0.2s ease-in-out',
-  },
-  logoHoverText: {
-    position: 'absolute',
-    top: '-30px',
-    left: '50%',
-    transform: 'translateX(-50%)',
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
-    color: 'white',
-    padding: '6px 10px',
-    borderRadius: '4px',
-    fontSize: '12px',
-    opacity: 0,
-    visibility: 'hidden',
-    transition: 'opacity 0.3s, visibility 0.3s',
-    whiteSpace: 'nowrap',
-    marginBottom: '5px',
-  },
-  logoLinkHover: {
-    transform: 'scale(1.05)',
-  },
-  logoHoverTextVisible: {
-    opacity: 1,
-    visibility: 'visible',
-  }
 };
 
 class SiteFooter extends React.Component {
@@ -86,25 +57,18 @@ class SiteFooter extends React.Component {
       >
         <div className="container-fluid d-flex">
           <a
-            style={{
-              ...logoStyles.logoLink,
-              ...(isLogoHovered ? logoStyles.logoLinkHover : {}),
-            }}
-            className="d-block"
+            className={`logo-link ${isLogoHovered ? 'logo-link-hover' : ''}`}
             href={config.LMS_BASE_URL}
             aria-label={intl.formatMessage(messages['footer.logo.ariaLabel'])}
             onMouseEnter={() => this.setState({ isLogoHovered: true })}
             onMouseLeave={() => this.setState({ isLogoHovered: false })}
           >
             <img
-              style={{ maxHeight: 45 }}
+              className="logo-image"
               src={logo || config.LOGO_TRADEMARK_URL}
               alt={intl.formatMessage(messages['footer.logo.altText'])}
             />
-            <span style={{
-              ...logoStyles.logoHoverText,
-              ...(isLogoHovered ? logoStyles.logoHoverTextVisible : {}),
-            }}>
+            <span className={`logo-hover-text ${isLogoHovered ? 'logo-hover-text-visible' : ''}`}>
               {intl.formatMessage(messages['footer.logo.hoverText'])}
             </span>
           </a>
