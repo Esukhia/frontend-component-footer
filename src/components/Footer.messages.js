@@ -153,7 +153,7 @@ const messages = defineMessages({
   },
   'footer.logo.hoverText': {
     id: 'footer.logo.hoverText',
-    defaultMessage: 'Go to home',
+    defaultMessage: 'Go to main page',
     description: 'Hover text for the footer logo that indicates clicking will return to home page.',
   },
 });
