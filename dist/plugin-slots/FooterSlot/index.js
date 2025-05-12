@@ -1,0 +1,9 @@
+import React from 'react';
+import { PluginSlot } from '@openedx/frontend-plugin-framework';
+import Footer from '../../components/Footer';
+const FooterSlot = () => /*#__PURE__*/React.createElement(PluginSlot, {
+  id: "org.openedx.frontend.layout.footer.v1",
+  idAliases: ['footer_slot']
+}, /*#__PURE__*/React.createElement(Footer, null));
+export default FooterSlot;
+//# sourceMappingURL=index.js.map
