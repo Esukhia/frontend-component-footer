@@ -23,58 +23,25 @@ class SiteFooter extends React.Component {
     super(props);
     this.externalLinkClickHandler = this.externalLinkClickHandler.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
-    this.throttledScrollHandler = this.throttledScrollHandler.bind(this);
-    this.handleTouchStart = this.handleTouchStart.bind(this);
-    this.handleTouchMove = this.handleTouchMove.bind(this);
-    this.handleTouchEnd = this.handleTouchEnd.bind(this);
-    this.scrollThrottleTimer = null;
     this.state = {
       isLogoHovered: false,
-      isOverscrolling: false,
       isVisible: false,
     };
   }
 
   componentDidMount() {
-    // Use a throttled scroll handler to prevent stuttering
-    window.addEventListener('scroll', this.throttledScrollHandler, { passive: true });
+    // Simple scroll handler
+    window.addEventListener('scroll', this.handleScroll, { passive: true });
 
-    // Add touch event listeners for mobile
-    document.addEventListener('touchstart', this.handleTouchStart, { passive: true });
-    document.addEventListener('touchmove', this.handleTouchMove, { passive: true });
-    document.addEventListener('touchend', this.handleTouchEnd, { passive: true });
-
-    // Initial check for scroll position - use a small delay to ensure DOM is ready
-    setTimeout(() => this.handleScroll(), 100);
-  }
-  
-  // Throttle scroll events to improve performance
-  throttledScrollHandler() {
-    // Clear any existing timer
-    if (this.scrollThrottleTimer) {
-      clearTimeout(this.scrollThrottleTimer);
-    }
-    
-    // Set a new timer with a very short delay
-    this.scrollThrottleTimer = setTimeout(() => {
-      this.handleScroll();
-      this.scrollThrottleTimer = null;
-    }, 5); // Very small delay for responsive scrolling
+    // Initial check for scroll position
+    this.handleScroll();
   }
 
   componentWillUnmount() {
-    window.removeEventListener('scroll', this.throttledScrollHandler);
-
-    document.removeEventListener('touchstart', this.handleTouchStart);
-    document.removeEventListener('touchmove', this.handleTouchMove);
-    document.removeEventListener('touchend', this.handleTouchEnd);
+    window.removeEventListener('scroll', this.handleScroll);
 
     // Clean up body class when component unmounts
     document.body.classList.remove('has-visible-footer');
-
-    // Clear any pending timeouts
-    clearTimeout(this.overscrollTimeout);
-    clearTimeout(this.scrollThrottleTimer);
   }
 
   handleScroll() {
@@ -85,67 +52,23 @@ class SiteFooter extends React.Component {
       document.body.offsetHeight,
       document.documentElement.clientHeight,
       document.documentElement.scrollHeight,
-      document.documentElement.offsetHeight
+      document.documentElement.offsetHeight,
     );
-    
-    // Calculate percentage scrolled (0 to 1)
-    const scrollPercentage = scrollPosition / docHeight;
-    
-    // Show footer when user has scrolled at least 98% of the page
-    const isNearBottom = scrollPercentage >= 0.98;
-    
-    // Very bottom detection for overscroll effect
-    const isAtVeryBottom = scrollPercentage >= 0.995;
-    
-    // Handle visibility changes
-    if (this.state.isVisible !== isNearBottom) {
+
+    // Only show at the very end of the page (within 5px)
+    const isAtBottom = scrollPosition >= docHeight - 5;
+
+    // Only update if state needs to change
+    if (this.state.isVisible !== isAtBottom) {
       // Update body class and state together
-      if (isNearBottom) {
+      if (isAtBottom) {
         document.body.classList.add('has-visible-footer');
       } else {
         document.body.classList.remove('has-visible-footer');
       }
-      
-      this.setState({ isVisible: isNearBottom });
+
+      this.setState({ isVisible: isAtBottom });
     }
-
-    // Handle overscroll effect separately
-    if (isAtVeryBottom && !this.state.isOverscrolling) {
-      this.setState({ isOverscrolling: true });
-      
-      // Reset after animation completes
-      clearTimeout(this.overscrollTimeout);
-      this.overscrollTimeout = setTimeout(() => {
-        this.setState({ isOverscrolling: false });
-      }, 100);
-    }
-  }
-
-  handleTouchStart(e) {
-    this.touchStartY = e.touches[0].clientY;
-    this.isScrollingAtBottom = (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 5;
-  }
-
-  handleTouchMove(e) {
-    if (!this.touchStartY) { return; }
-
-    const touchY = e.touches[0].clientY;
-    const diff = touchY - this.touchStartY;
-
-    // If scrolled to bottom and trying to scroll further down
-    if (this.isScrollingAtBottom && diff > 10) {
-      this.setState({ isOverscrolling: true });
-    }
-  }
-
-  handleTouchEnd() {
-    if (this.state.isOverscrolling) {
-      setTimeout(() => {
-        this.setState({ isOverscrolling: false });
-      }, 200);
-    }
-    this.touchStartY = null;
-    this.isScrollingAtBottom = false;
   }
 
   externalLinkClickHandler(event) {
@@ -165,14 +88,14 @@ class SiteFooter extends React.Component {
       logo,
       intl,
     } = this.props;
-    const { isLogoHovered, isOverscrolling, isVisible } = this.state;
+    const { isLogoHovered, isVisible } = this.state;
     const showLanguageSelector = supportedLanguages.length > 0 && onLanguageSelected;
     const { config } = this.context;
 
     return (
       <footer
         role="contentinfo"
-        className={`footer-fixed py-0 px-4 ${isVisible ? 'visible' : ''} ${isOverscrolling ? 'overscroll' : ''}`}
+        className={`footer-fixed py-0 px-4 ${isVisible ? 'visible' : ''}`}
         aria-label="Site footer"
       >
         <div className="container-fluid footer-container">
@@ -198,7 +121,7 @@ class SiteFooter extends React.Component {
               </div>
             </a>
           </div>
-          
+
           <div className="flex-grow-1" />
           {showLanguageSelector && (
             <div className="language-selector-wrapper">

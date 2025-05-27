@@ -8,11 +8,9 @@
   background-color: #fff;
   border-top: 1px solid #e7e7e7;
   z-index: 1000;
-  display: flex;
+  display: none; /* Hidden by default */
   align-items: center;
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
-  transform: translateY(100%);
-  transition: transform 0.2s ease;
 }
 
 /* Add padding to body when footer is visible to prevent content from being hidden */
@@ -22,14 +20,9 @@ body.has-visible-footer {
 
 /* Show footer when at bottom of page */
 .footer-fixed.visible {
-  transform: translateY(0);
+  display: flex; /* Show as flex when visible class is added */
 }
 
-/* Add this class when overscrolling is detected */
-.footer-fixed.overscroll {
-  transform: translateY(20px);
-  transition: transform 0.1s ease-out;
-}
 
 .footer-container {
   display: flex;
