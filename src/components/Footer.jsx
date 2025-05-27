@@ -30,9 +30,18 @@ class SiteFooter extends React.Component {
   }
 
   componentDidMount() {
+    // First set initial state to ensure footer is hidden
+    this.setState({ isAtBottom: false });
+
+    // Add scroll event listener
     window.addEventListener('scroll', this.handleScroll, { passive: true });
-    // Check initial position
-    this.handleScroll();
+
+    // Wait for page to be fully loaded before checking scroll position
+    if (document.readyState === 'complete') {
+      this.handleScroll();
+    } else {
+      window.addEventListener('load', this.handleScroll, { once: true });
+    }
   }
 
   componentWillUnmount() {
