@@ -14,8 +14,6 @@ ensureConfig([
   'LOGO_TRADEMARK_URL',
 ], 'Footer component');
 
-
-
 const EVENT_NAMES = {
   FOOTER_LINK: 'edx.bi.footer.link',
 };
@@ -89,7 +87,7 @@ class SiteFooter extends React.Component {
               </div>
             </a>
           </div>
-          
+
           <div className="flex-grow-1" />
 
           {showLanguageSelector && (
