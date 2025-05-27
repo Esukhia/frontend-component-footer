@@ -11,14 +11,8 @@
   display: flex;
   align-items: center;
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s ease-out;
 }
 
-/* Add this class when overscrolling is detected */
-.footer-fixed.overscroll {
-  transform: translateY(20px);
-  transition: transform 0.1s ease-out;
-}
 
 .footer-container {
   display: flex;
