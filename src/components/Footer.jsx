@@ -50,12 +50,16 @@ class SiteFooter extends React.Component {
   
   // Throttle scroll events to improve performance
   throttledScrollHandler() {
-    if (!this.scrollThrottleTimer) {
-      this.scrollThrottleTimer = setTimeout(() => {
-        this.handleScroll();
-        this.scrollThrottleTimer = null;
-      }, 10); // Small delay to smooth out multiple scroll events
+    // Clear any existing timer
+    if (this.scrollThrottleTimer) {
+      clearTimeout(this.scrollThrottleTimer);
     }
+    
+    // Set a new timer with a very short delay
+    this.scrollThrottleTimer = setTimeout(() => {
+      this.handleScroll();
+      this.scrollThrottleTimer = null;
+    }, 5); // Very small delay for responsive scrolling
   }
 
   componentWillUnmount() {
@@ -84,23 +88,24 @@ class SiteFooter extends React.Component {
       document.documentElement.offsetHeight
     );
     
-    // Only show footer when truly at the end (within 20px)
-    const bottomThreshold = docHeight - 20; // Show only when at the very end
-    const isAtVeryBottom = scrollPosition >= docHeight - 5;
-
-    // Update visibility based on scroll position
-    const isNearBottom = scrollPosition >= bottomThreshold;
+    // Calculate percentage scrolled (0 to 1)
+    const scrollPercentage = scrollPosition / docHeight;
+    
+    // Show footer when user has scrolled at least 98% of the page
+    const isNearBottom = scrollPercentage >= 0.98;
+    
+    // Very bottom detection for overscroll effect
+    const isAtVeryBottom = scrollPercentage >= 0.995;
     
     // Handle visibility changes
     if (this.state.isVisible !== isNearBottom) {
-      // Update body class first for smoother transition
+      // Update body class and state together
       if (isNearBottom) {
         document.body.classList.add('has-visible-footer');
       } else {
         document.body.classList.remove('has-visible-footer');
       }
       
-      // Then update component state
       this.setState({ isVisible: isNearBottom });
     }
 
@@ -112,7 +117,7 @@ class SiteFooter extends React.Component {
       clearTimeout(this.overscrollTimeout);
       this.overscrollTimeout = setTimeout(() => {
         this.setState({ isOverscrolling: false });
-      }, 100); // Even faster reset time
+      }, 100);
     }
   }
 
