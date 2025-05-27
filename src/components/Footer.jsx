@@ -32,16 +32,8 @@ class SiteFooter extends React.Component {
   }
 
   componentDidMount() {
-    // Ensure footer is hidden on initial load
-    document.body.classList.remove('has-visible-footer');
-
-    // Force initial check to ensure footer is hidden
-    this.setState({ isAtBottom: false });
-
     // Add scroll event listener
     window.addEventListener('scroll', this.handleScroll, { passive: true });
-    // Add resize listener to handle window size changes
-    window.addEventListener('resize', this.handleScroll, { passive: true });
 
     // Set a timeout to mark the initial load phase as complete
     // This ensures the footer stays hidden on initial load
@@ -53,39 +45,35 @@ class SiteFooter extends React.Component {
   }
 
   componentWillUnmount() {
-    // Remove all event listeners
     window.removeEventListener('scroll', this.handleScroll);
-    window.removeEventListener('resize', this.handleScroll);
-
-    // Clean up by removing the body class when component unmounts
-    document.body.classList.remove('has-visible-footer');
   }
 
   handleScroll() {
-    // Skip if we're in initial load phase
-    if (this.state.isInitialLoad) {
-      return;
-    }
-
     // Check if we're at the bottom of the page
     const windowHeight = window.innerHeight;
     const documentHeight = document.documentElement.scrollHeight;
     const scrollTop = window.scrollY || document.documentElement.scrollTop;
 
-    // Use a fixed threshold that doesn't change based on state
-    // This provides more consistent behavior
-    const threshold = 20;
+    // Add padding to the calculation to account for the footer height
+    // This prevents the stuttering effect when scrolling slowly
+    const footerHeight = 80; // Same as in CSS
+    const bottomThreshold = this.state.isAtBottom ? (20 + footerHeight) : 20;
 
     // Consider "at bottom" when within threshold of the bottom
-    const isAtBottom = (windowHeight + scrollTop) >= (documentHeight - threshold);
+    const isAtBottom = (windowHeight + scrollTop) >= (documentHeight - bottomThreshold);
 
-    // Always update the body class to match the current scroll position
-    // This ensures the footer visibility is always in sync with the scroll position
-    document.body.classList.toggle('has-visible-footer', isAtBottom);
-
-    // Only update state if it has changed
+    // Only update if the state has changed
     if (isAtBottom !== this.state.isAtBottom) {
       this.setState({ isAtBottom });
+
+      // Use a small delay to avoid immediate layout recalculation
+      // Only manipulate the DOM class if we're past the initial load
+      if (!this.state.isInitialLoad) {
+        setTimeout(() => {
+          // Use toggle instead of add/remove for cleaner code
+          document.body.classList.toggle('has-visible-footer', isAtBottom);
+        }, 10);
+      }
     }
   }
 
