@@ -11,9 +11,14 @@
   display: flex;
   align-items: center;
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+  transition: transform 0.15s ease-out, opacity 0.15s ease-out;
   transform: translateY(100%);
   opacity: 0;
+}
+
+/* Add padding to body when footer is visible to prevent content from being hidden */
+body.has-visible-footer {
+  padding-bottom: 80px;
 }
 
 /* Show footer when at bottom of page */

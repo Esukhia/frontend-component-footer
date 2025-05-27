@@ -39,6 +39,9 @@ class SiteFooter extends React.Component {
     document.addEventListener('touchstart', this.handleTouchStart, { passive: true });
     document.addEventListener('touchmove', this.handleTouchMove, { passive: true });
     document.addEventListener('touchend', this.handleTouchEnd, { passive: true });
+
+    // Initial check for scroll position
+    this.handleScroll();
   }
 
   componentWillUnmount() {
@@ -46,13 +49,19 @@ class SiteFooter extends React.Component {
     document.removeEventListener('touchstart', this.handleTouchStart);
     document.removeEventListener('touchmove', this.handleTouchMove);
     document.removeEventListener('touchend', this.handleTouchEnd);
+
+    // Clean up body class when component unmounts
+    document.body.classList.remove('has-visible-footer');
+
+    // Clear any pending timeouts
+    clearTimeout(this.overscrollTimeout);
   }
 
   handleScroll() {
     // Calculate how close to the bottom the user is
     const scrollPosition = window.innerHeight + window.scrollY;
-    const bottomThreshold = document.body.offsetHeight - 100; // Show when within 100px of bottom
-    const isAtVeryBottom = scrollPosition >= document.body.offsetHeight;
+    const bottomThreshold = document.body.offsetHeight - 150; // Show when within 150px of bottom
+    const isAtVeryBottom = scrollPosition >= document.body.offsetHeight - 20;
 
     // Update visibility based on scroll position
     const isNearBottom = scrollPosition >= bottomThreshold;
@@ -60,6 +69,13 @@ class SiteFooter extends React.Component {
 
     if (this.state.isVisible !== isNearBottom) {
       stateUpdates.isVisible = isNearBottom;
+
+      // Add or remove body class to prevent content from being hidden
+      if (isNearBottom) {
+        document.body.classList.add('has-visible-footer');
+      } else {
+        document.body.classList.remove('has-visible-footer');
+      }
     }
 
     // Check if at bottom of page for overscroll effect
@@ -70,7 +86,7 @@ class SiteFooter extends React.Component {
       clearTimeout(this.overscrollTimeout);
       this.overscrollTimeout = setTimeout(() => {
         this.setState({ isOverscrolling: false });
-      }, 200);
+      }, 150); // Faster reset time
     }
 
     // Only update state if needed
