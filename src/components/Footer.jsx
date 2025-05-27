@@ -14,6 +14,8 @@ ensureConfig([
   'LOGO_TRADEMARK_URL',
 ], 'Footer component');
 
+
+
 const EVENT_NAMES = {
   FOOTER_LINK: 'edx.bi.footer.link',
 };
@@ -23,52 +25,70 @@ class SiteFooter extends React.Component {
     super(props);
     this.externalLinkClickHandler = this.externalLinkClickHandler.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
+    this.handleTouchStart = this.handleTouchStart.bind(this);
+    this.handleTouchMove = this.handleTouchMove.bind(this);
+    this.handleTouchEnd = this.handleTouchEnd.bind(this);
+    this.footerRef = React.createRef();
     this.state = {
       isLogoHovered: false,
-      isVisible: false,
+      isOverscrolling: false,
     };
   }
 
   componentDidMount() {
-    // Simple scroll handler
     window.addEventListener('scroll', this.handleScroll, { passive: true });
-
-    // Initial check for scroll position
-    this.handleScroll();
+    // Add touch event listeners for mobile
+    document.addEventListener('touchstart', this.handleTouchStart, { passive: true });
+    document.addEventListener('touchmove', this.handleTouchMove, { passive: true });
+    document.addEventListener('touchend', this.handleTouchEnd, { passive: true });
   }
 
   componentWillUnmount() {
     window.removeEventListener('scroll', this.handleScroll);
-
-    // Clean up body class when component unmounts
-    document.body.classList.remove('has-visible-footer');
+    document.removeEventListener('touchstart', this.handleTouchStart);
+    document.removeEventListener('touchmove', this.handleTouchMove);
+    document.removeEventListener('touchend', this.handleTouchEnd);
   }
 
   handleScroll() {
-    // Calculate how close to the bottom the user is
-    const scrollPosition = window.innerHeight + window.scrollY;
-    const docHeight = Math.max(
-      document.body.scrollHeight,
-      document.body.offsetHeight,
-      document.documentElement.clientHeight,
-      document.documentElement.scrollHeight,
-      document.documentElement.offsetHeight,
-    );
+    // Check if at bottom of page
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+      // User is at the bottom of the page
+      this.setState({ isOverscrolling: true });
 
-    // Only show at the very end of the page (within 5px)
-    const isAtBottom = scrollPosition >= docHeight - 5;
-
-    // Only update if state needs to change
-    if (this.state.isVisible !== isAtBottom) {
-      // Update body class and state together
-      if (isAtBottom) {
-        document.body.classList.add('has-visible-footer');
-      } else {
-        document.body.classList.remove('has-visible-footer');
-      }
-
-      this.setState({ isVisible: isAtBottom });
+      // Reset after animation completes
+      clearTimeout(this.overscrollTimeout);
+      this.overscrollTimeout = setTimeout(() => {
+        this.setState({ isOverscrolling: false });
+      }, 200);
     }
+  }
+
+  handleTouchStart(e) {
+    this.touchStartY = e.touches[0].clientY;
+    this.isScrollingAtBottom = (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 5;
+  }
+
+  handleTouchMove(e) {
+    if (!this.touchStartY) { return; }
+
+    const touchY = e.touches[0].clientY;
+    const diff = touchY - this.touchStartY;
+
+    // If scrolled to bottom and trying to scroll further down
+    if (this.isScrollingAtBottom && diff > 10) {
+      this.setState({ isOverscrolling: true });
+    }
+  }
+
+  handleTouchEnd() {
+    if (this.state.isOverscrolling) {
+      setTimeout(() => {
+        this.setState({ isOverscrolling: false });
+      }, 200);
+    }
+    this.touchStartY = null;
+    this.isScrollingAtBottom = false;
   }
 
   externalLinkClickHandler(event) {
@@ -88,15 +108,16 @@ class SiteFooter extends React.Component {
       logo,
       intl,
     } = this.props;
-    const { isLogoHovered, isVisible } = this.state;
+    const { isLogoHovered, isOverscrolling } = this.state;
     const showLanguageSelector = supportedLanguages.length > 0 && onLanguageSelected;
     const { config } = this.context;
 
     return (
       <footer
         role="contentinfo"
-        className={`footer-fixed py-0 px-4 ${isVisible ? 'visible' : ''}`}
+        className={`footer-fixed py-0 px-4 ${isOverscrolling ? 'overscroll' : ''}`}
         aria-label="Site footer"
+        ref={this.footerRef}
       >
         <div className="container-fluid footer-container">
           <div className="logo-wrapper">
@@ -121,8 +142,9 @@ class SiteFooter extends React.Component {
               </div>
             </a>
           </div>
-
+          
           <div className="flex-grow-1" />
+
           {showLanguageSelector && (
             <div className="language-selector-wrapper">
               <LanguageSelector
