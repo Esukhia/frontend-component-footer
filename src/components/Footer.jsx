@@ -24,9 +24,71 @@ class SiteFooter extends React.Component {
   constructor(props) {
     super(props);
     this.externalLinkClickHandler = this.externalLinkClickHandler.bind(this);
+    this.handleScroll = this.handleScroll.bind(this);
+    this.handleTouchStart = this.handleTouchStart.bind(this);
+    this.handleTouchMove = this.handleTouchMove.bind(this);
+    this.handleTouchEnd = this.handleTouchEnd.bind(this);
+    this.footerRef = React.createRef();
     this.state = {
       isLogoHovered: false,
+      isOverscrolling: false,
     };
+  }
+
+  componentDidMount() {
+    window.addEventListener('scroll', this.handleScroll, { passive: true });
+    // Add touch event listeners for mobile
+    document.addEventListener('touchstart', this.handleTouchStart, { passive: true });
+    document.addEventListener('touchmove', this.handleTouchMove, { passive: true });
+    document.addEventListener('touchend', this.handleTouchEnd, { passive: true });
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll);
+    document.removeEventListener('touchstart', this.handleTouchStart);
+    document.removeEventListener('touchmove', this.handleTouchMove);
+    document.removeEventListener('touchend', this.handleTouchEnd);
+  }
+
+  handleScroll() {
+    // Check if at bottom of page
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+      // User is at the bottom of the page
+      this.setState({ isOverscrolling: true });
+
+      // Reset after animation completes
+      clearTimeout(this.overscrollTimeout);
+      this.overscrollTimeout = setTimeout(() => {
+        this.setState({ isOverscrolling: false });
+      }, 200);
+    }
+  }
+
+  handleTouchStart(e) {
+    this.touchStartY = e.touches[0].clientY;
+    this.isScrollingAtBottom = (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 5;
+  }
+
+  handleTouchMove(e) {
+    if (!this.touchStartY) { return; }
+
+    const touchY = e.touches[0].clientY;
+    const diff = touchY - this.touchStartY;
+
+    // If scrolled to bottom and trying to scroll further down
+    if (this.isScrollingAtBottom && diff > 10) {
+      this.setState({ isOverscrolling: true });
+    }
+  }
+
+  handleTouchEnd() {
+    if (this.state.isOverscrolling) {
+      setTimeout(() => {
+        this.setState({ isOverscrolling: false });
+      }, 200);
+    }
+    this.touchStartY = null;
+    this.isScrollingAtBottom = false;
   }
 
   externalLinkClickHandler(event) {
@@ -46,15 +108,16 @@ class SiteFooter extends React.Component {
       logo,
       intl,
     } = this.props;
-    const { isLogoHovered } = this.state;
+    const { isLogoHovered, isOverscrolling } = this.state;
     const showLanguageSelector = supportedLanguages.length > 0 && onLanguageSelected;
     const { config } = this.context;
 
     return (
       <footer
         role="contentinfo"
-        className="footer-fixed py-0 px-4"
+        className={`footer-fixed py-0 px-4 ${isOverscrolling ? 'overscroll' : ''}`}
         aria-label="Site footer"
+        ref={this.footerRef}
       >
         <div className="container-fluid footer-container">
           <div className="logo-wrapper">
@@ -70,7 +133,7 @@ class SiteFooter extends React.Component {
                 src={logo || config.LOGO_TRADEMARK_URL}
                 alt={intl.formatMessage(messages['footer.logo.altText'])}
               />
-              <div 
+              <div
                 className={`custom-tooltip ${isLogoHovered ? 'custom-tooltip-visible' : ''}`}
                 role="tooltip"
                 aria-hidden={!isLogoHovered}
@@ -81,7 +144,7 @@ class SiteFooter extends React.Component {
           </div>
           
           <div className="flex-grow-1" />
-          
+
           {showLanguageSelector && (
             <div className="language-selector-wrapper">
               <LanguageSelector
