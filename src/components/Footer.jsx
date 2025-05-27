@@ -26,6 +26,7 @@ class SiteFooter extends React.Component {
     this.handleTouchStart = this.handleTouchStart.bind(this);
     this.handleTouchMove = this.handleTouchMove.bind(this);
     this.handleTouchEnd = this.handleTouchEnd.bind(this);
+    this.scrollThrottleTimer = null;
     this.state = {
       isLogoHovered: false,
       isOverscrolling: false,
@@ -34,7 +35,9 @@ class SiteFooter extends React.Component {
   }
 
   componentDidMount() {
-    window.addEventListener('scroll', this.handleScroll, { passive: true });
+    // Use a throttled scroll handler to prevent stuttering
+    window.addEventListener('scroll', this.throttledScrollHandler, { passive: true });
+
     // Add touch event listeners for mobile
     document.addEventListener('touchstart', this.handleTouchStart, { passive: true });
     document.addEventListener('touchmove', this.handleTouchMove, { passive: true });
@@ -43,9 +46,20 @@ class SiteFooter extends React.Component {
     // Initial check for scroll position
     this.handleScroll();
   }
+  
+  // Throttle scroll events to improve performance
+  throttledScrollHandler() {
+    if (!this.scrollThrottleTimer) {
+      this.scrollThrottleTimer = setTimeout(() => {
+        this.handleScroll();
+        this.scrollThrottleTimer = null;
+      }, 10); // Small delay to smooth out multiple scroll events
+    }
+  }
 
   componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleScroll);
+    window.removeEventListener('scroll', this.throttledScrollHandler);
+
     document.removeEventListener('touchstart', this.handleTouchStart);
     document.removeEventListener('touchmove', this.handleTouchMove);
     document.removeEventListener('touchend', this.handleTouchEnd);
@@ -55,43 +69,49 @@ class SiteFooter extends React.Component {
 
     // Clear any pending timeouts
     clearTimeout(this.overscrollTimeout);
+    clearTimeout(this.scrollThrottleTimer);
   }
 
   handleScroll() {
     // Calculate how close to the bottom the user is
     const scrollPosition = window.innerHeight + window.scrollY;
-    const bottomThreshold = document.body.offsetHeight - 150; // Show when within 150px of bottom
-    const isAtVeryBottom = scrollPosition >= document.body.offsetHeight - 20;
+    const docHeight = Math.max(
+      document.body.scrollHeight,
+      document.body.offsetHeight,
+      document.documentElement.clientHeight,
+      document.documentElement.scrollHeight,
+      document.documentElement.offsetHeight
+    );
+    
+    // More reliable way to detect bottom of page
+    const bottomThreshold = docHeight - 200; // Show when within 200px of bottom
+    const isAtVeryBottom = scrollPosition >= docHeight - 20;
 
     // Update visibility based on scroll position
     const isNearBottom = scrollPosition >= bottomThreshold;
-    const stateUpdates = {};
-
+    
+    // Handle visibility changes
     if (this.state.isVisible !== isNearBottom) {
-      stateUpdates.isVisible = isNearBottom;
-
-      // Add or remove body class to prevent content from being hidden
+      // Update body class first for smoother transition
       if (isNearBottom) {
         document.body.classList.add('has-visible-footer');
       } else {
         document.body.classList.remove('has-visible-footer');
       }
+      
+      // Then update component state
+      this.setState({ isVisible: isNearBottom });
     }
 
-    // Check if at bottom of page for overscroll effect
-    if (isAtVeryBottom) {
-      stateUpdates.isOverscrolling = true;
-
+    // Handle overscroll effect separately
+    if (isAtVeryBottom && !this.state.isOverscrolling) {
+      this.setState({ isOverscrolling: true });
+      
       // Reset after animation completes
       clearTimeout(this.overscrollTimeout);
       this.overscrollTimeout = setTimeout(() => {
         this.setState({ isOverscrolling: false });
-      }, 150); // Faster reset time
-    }
-
-    // Only update state if needed
-    if (Object.keys(stateUpdates).length > 0) {
-      this.setState(stateUpdates);
+      }, 100); // Even faster reset time
     }
   }
 

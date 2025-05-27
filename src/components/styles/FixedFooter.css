@@ -11,9 +11,9 @@
   display: flex;
   align-items: center;
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
-  transition: transform 0.15s ease-out, opacity 0.15s ease-out;
   transform: translateY(100%);
-  opacity: 0;
+  visibility: hidden;
+  transition: transform 0.1s cubic-bezier(0.215, 0.61, 0.355, 1), visibility 0s 0.1s;
 }
 
 /* Add padding to body when footer is visible to prevent content from being hidden */
@@ -24,7 +24,8 @@ body.has-visible-footer {
 /* Show footer when at bottom of page */
 .footer-fixed.visible {
   transform: translateY(0);
-  opacity: 1;
+  visibility: visible;
+  transition: transform 0.1s cubic-bezier(0.215, 0.61, 0.355, 1), visibility 0s;
 }
 
 /* Add this class when overscrolling is detected */
