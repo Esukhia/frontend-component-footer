@@ -11,7 +11,15 @@
   display: flex;
   align-items: center;
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
-  transition: transform 0.2s ease-out;
+  transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+  transform: translateY(100%);
+  opacity: 0;
+}
+
+/* Show footer when at bottom of page */
+.footer-fixed.visible {
+  transform: translateY(0);
+  opacity: 1;
 }
 
 /* Add this class when overscrolling is detected */
