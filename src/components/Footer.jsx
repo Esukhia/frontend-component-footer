@@ -32,11 +32,14 @@ class SiteFooter extends React.Component {
   }
 
   componentDidMount() {
+    // Ensure footer is hidden on initial load
+    document.body.classList.remove('has-visible-footer');
+
     // Add scroll event listener
     window.addEventListener('scroll', this.handleScroll, { passive: true });
 
     // Set a timeout to mark the initial load phase as complete
-    // This ensures the footer stays hidden on initial load
+    // This ensures the footer stays hidden on initial load until we've scrolled
     setTimeout(() => {
       this.setState({ isInitialLoad: false });
       // Only then check if we should show the footer
@@ -100,10 +103,13 @@ class SiteFooter extends React.Component {
     const showLanguageSelector = supportedLanguages.length > 0 && onLanguageSelected;
     const { config } = this.context;
 
+    // Force footer to be hidden on initial load
+    const footerVisibleClass = (isAtBottom && !isInitialLoad) ? 'footer-visible' : '';
+
     return (
       <footer
         role="contentinfo"
-        className={`footer-fixed py-0 px-4 ${isAtBottom && !isInitialLoad ? 'footer-visible' : ''}`}
+        className={`footer-fixed py-0 px-4 ${footerVisibleClass}`}
         aria-label="Site footer"
       >
         <div className="container-fluid footer-container">
