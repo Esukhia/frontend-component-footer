@@ -23,6 +23,7 @@ class SiteFooter extends React.Component {
     super(props);
     this.externalLinkClickHandler = this.externalLinkClickHandler.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
+    this.throttledScrollHandler = this.throttledScrollHandler.bind(this);
     this.handleTouchStart = this.handleTouchStart.bind(this);
     this.handleTouchMove = this.handleTouchMove.bind(this);
     this.handleTouchEnd = this.handleTouchEnd.bind(this);
@@ -43,8 +44,8 @@ class SiteFooter extends React.Component {
     document.addEventListener('touchmove', this.handleTouchMove, { passive: true });
     document.addEventListener('touchend', this.handleTouchEnd, { passive: true });
 
-    // Initial check for scroll position
-    this.handleScroll();
+    // Initial check for scroll position - use a small delay to ensure DOM is ready
+    setTimeout(() => this.handleScroll(), 100);
   }
   
   // Throttle scroll events to improve performance
