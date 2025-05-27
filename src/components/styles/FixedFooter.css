@@ -11,15 +11,18 @@
   display: flex;
   align-items: center;
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
-  /* Initially hidden */
+  /* Initially hidden - using multiple techniques to ensure it's hidden */
   transform: translateY(100%);
   visibility: hidden;
+  opacity: 0;
+  transition: transform 0.3s, visibility 0.3s, opacity 0.3s;
 }
 
 /* Show footer when at bottom of page */
 .footer-visible {
   transform: translateY(0);
   visibility: visible;
+  opacity: 1;
 }
 
 /* Add padding to body when footer is visible to prevent content from being hidden */

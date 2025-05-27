@@ -23,6 +23,7 @@ class SiteFooter extends React.Component {
     super(props);
     this.externalLinkClickHandler = this.externalLinkClickHandler.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
+    this.footerRef = React.createRef();
     // Start with footer hidden
     this.state = {
       isLogoHovered: false,
@@ -32,8 +33,16 @@ class SiteFooter extends React.Component {
   }
 
   componentDidMount() {
-    // Ensure footer is hidden on initial load
+    // Ensure footer is hidden on initial load using multiple techniques
     document.body.classList.remove('has-visible-footer');
+
+    // Force the footer to be hidden initially
+    if (this.footerRef.current) {
+      // Apply inline styles for maximum hiding power
+      this.footerRef.current.style.transform = 'translateY(100%)';
+      this.footerRef.current.style.visibility = 'hidden';
+      this.footerRef.current.style.opacity = '0';
+    }
 
     // Add scroll event listener
     window.addEventListener('scroll', this.handleScroll, { passive: true });
@@ -108,9 +117,11 @@ class SiteFooter extends React.Component {
 
     return (
       <footer
+        ref={this.footerRef}
         role="contentinfo"
         className={`footer-fixed py-0 px-4 ${footerVisibleClass}`}
         aria-label="Site footer"
+        style={{ display: isInitialLoad ? 'none' : 'flex' }} /* Force hide on initial load */
       >
         <div className="container-fluid footer-container">
           <div className="logo-wrapper">
