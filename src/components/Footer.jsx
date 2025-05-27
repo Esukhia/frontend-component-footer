@@ -46,6 +46,8 @@ class SiteFooter extends React.Component {
 
   componentWillUnmount() {
     window.removeEventListener('scroll', this.handleScroll);
+    // Clean up by removing the body class when component unmounts
+    document.body.classList.remove('has-visible-footer');
   }
 
   handleScroll() {
@@ -59,6 +61,13 @@ class SiteFooter extends React.Component {
 
     if (isAtBottom !== this.state.isAtBottom) {
       this.setState({ isAtBottom });
+
+      // Add or remove the body class to prevent content from being hidden
+      if (isAtBottom && !this.state.isInitialLoad) {
+        document.body.classList.add('has-visible-footer');
+      } else {
+        document.body.classList.remove('has-visible-footer');
+      }
     }
   }
 
