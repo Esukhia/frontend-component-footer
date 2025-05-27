@@ -56,18 +56,27 @@ class SiteFooter extends React.Component {
     const documentHeight = document.documentElement.scrollHeight;
     const scrollTop = window.scrollY || document.documentElement.scrollTop;
 
-    // Consider "at bottom" when within 20px of the bottom or at the bottom
-    const isAtBottom = (windowHeight + scrollTop) >= (documentHeight - 20);
+    // Add padding to the calculation to account for the footer height
+    // This prevents the stuttering effect when scrolling slowly
+    const footerHeight = 80; // Same as in CSS
+    const bottomThreshold = this.state.isAtBottom ? (20 + footerHeight) : 20;
+
+    // Consider "at bottom" when within threshold of the bottom
+    const isAtBottom = (windowHeight + scrollTop) >= (documentHeight - bottomThreshold);
 
     if (isAtBottom !== this.state.isAtBottom) {
+      // First update the state
       this.setState({ isAtBottom });
 
-      // Add or remove the body class to prevent content from being hidden
-      if (isAtBottom && !this.state.isInitialLoad) {
-        document.body.classList.add('has-visible-footer');
-      } else {
-        document.body.classList.remove('has-visible-footer');
-      }
+      // Then add or remove the body class to prevent content from being hidden
+      // Use a small delay to avoid immediate layout recalculation
+      setTimeout(() => {
+        if (isAtBottom && !this.state.isInitialLoad) {
+          document.body.classList.add('has-visible-footer');
+        } else {
+          document.body.classList.remove('has-visible-footer');
+        }
+      }, 10);
     }
   }
 
