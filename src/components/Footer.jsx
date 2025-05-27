@@ -7,7 +7,7 @@ import { AppContext } from '@edx/frontend-platform/react';
 
 import messages from './Footer.messages';
 import LanguageSelector from './LanguageSelector';
-import './styles/Logo.css';
+import './styles/FixedFooter.css';
 
 ensureConfig([
   'LMS_BASE_URL',
@@ -53,31 +53,42 @@ class SiteFooter extends React.Component {
     return (
       <footer
         role="contentinfo"
-        className="footer d-flex border-top py-3 px-4"
+        className="footer-fixed py-0 px-4"
+        aria-label="Site footer"
       >
-        <div className="container-fluid d-flex">
-          <a
-            className={`logo-link ${isLogoHovered ? 'logo-link-hover' : ''}`}
-            href={config.LMS_BASE_URL}
-            aria-label={intl.formatMessage(messages['footer.logo.ariaLabel'])}
-            onMouseEnter={() => this.setState({ isLogoHovered: true })}
-            onMouseLeave={() => this.setState({ isLogoHovered: false })}
-          >
-            <img
-              className="logo-image"
-              src={logo || config.LOGO_TRADEMARK_URL}
-              alt={intl.formatMessage(messages['footer.logo.altText'])}
-            />
-            <span className={`logo-hover-text ${isLogoHovered ? 'logo-hover-text-visible' : ''}`}>
-              {intl.formatMessage(messages['footer.logo.hoverText'])}
-            </span>
-          </a>
+        <div className="container-fluid footer-container">
+          <div className="logo-wrapper">
+            <a
+              className={`logo-link ${isLogoHovered ? 'logo-link-hover' : ''}`}
+              href={config.LMS_BASE_URL}
+              aria-label={intl.formatMessage(messages['footer.logo.ariaLabel'])}
+              onMouseEnter={() => this.setState({ isLogoHovered: true })}
+              onMouseLeave={() => this.setState({ isLogoHovered: false })}
+            >
+              <img
+                className="logo-image"
+                src={logo || config.LOGO_TRADEMARK_URL}
+                alt={intl.formatMessage(messages['footer.logo.altText'])}
+              />
+              <div 
+                className={`custom-tooltip ${isLogoHovered ? 'custom-tooltip-visible' : ''}`}
+                role="tooltip"
+                aria-hidden={!isLogoHovered}
+              >
+                {intl.formatMessage(messages['footer.logo.hoverText'])}
+              </div>
+            </a>
+          </div>
+          
           <div className="flex-grow-1" />
+          
           {showLanguageSelector && (
-            <LanguageSelector
-              options={supportedLanguages}
-              onSubmit={onLanguageSelected}
-            />
+            <div className="language-selector-wrapper">
+              <LanguageSelector
+                options={supportedLanguages}
+                onSubmit={onLanguageSelected}
+              />
+            </div>
           )}
         </div>
       </footer>
