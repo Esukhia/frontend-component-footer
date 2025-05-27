@@ -23,25 +23,25 @@ class SiteFooter extends React.Component {
     super(props);
     this.externalLinkClickHandler = this.externalLinkClickHandler.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
+    // Start with footer hidden
     this.state = {
       isLogoHovered: false,
       isAtBottom: false,
+      isInitialLoad: true, // Track initial page load
     };
   }
 
   componentDidMount() {
-    // First set initial state to ensure footer is hidden
-    this.setState({ isAtBottom: false });
-
     // Add scroll event listener
     window.addEventListener('scroll', this.handleScroll, { passive: true });
 
-    // Wait for page to be fully loaded before checking scroll position
-    if (document.readyState === 'complete') {
+    // Set a timeout to mark the initial load phase as complete
+    // This ensures the footer stays hidden on initial load
+    setTimeout(() => {
+      this.setState({ isInitialLoad: false });
+      // Only then check if we should show the footer
       this.handleScroll();
-    } else {
-      window.addEventListener('load', this.handleScroll, { once: true });
-    }
+    }, 500);
   }
 
   componentWillUnmount() {
@@ -79,14 +79,14 @@ class SiteFooter extends React.Component {
       logo,
       intl,
     } = this.props;
-    const { isLogoHovered, isAtBottom } = this.state;
+    const { isLogoHovered, isAtBottom, isInitialLoad } = this.state;
     const showLanguageSelector = supportedLanguages.length > 0 && onLanguageSelected;
     const { config } = this.context;
 
     return (
       <footer
         role="contentinfo"
-        className={`footer-fixed py-0 px-4 ${isAtBottom ? 'footer-visible' : ''}`}
+        className={`footer-fixed py-0 px-4 ${isAtBottom && !isInitialLoad ? 'footer-visible' : ''}`}
         aria-label="Site footer"
       >
         <div className="container-fluid footer-container">
