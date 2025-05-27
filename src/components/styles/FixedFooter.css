@@ -22,6 +22,11 @@
   visibility: visible;
 }
 
+/* Add padding to body when footer is visible to prevent content from being hidden */
+.body-with-footer-padding {
+  padding-bottom: 80px; /* Same as footer height */
+}
+
 
 .footer-container {
   display: flex;

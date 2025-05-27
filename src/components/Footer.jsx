@@ -59,6 +59,13 @@ class SiteFooter extends React.Component {
 
     if (isAtBottom !== this.state.isAtBottom) {
       this.setState({ isAtBottom });
+
+      // Add or remove padding from body to prevent content from being hidden
+      if (isAtBottom) {
+        document.body.classList.add('body-with-footer-padding');
+      } else {
+        document.body.classList.remove('body-with-footer-padding');
+      }
     }
   }
 
