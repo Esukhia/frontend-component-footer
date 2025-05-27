@@ -20,7 +20,6 @@
 .footer-visible {
   transform: translateY(0);
   visibility: visible;
-  opacity: 1;
 }
 
 /* Add padding to body when footer is visible to prevent content from being hidden */

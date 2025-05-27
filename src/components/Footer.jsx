@@ -100,16 +100,13 @@ class SiteFooter extends React.Component {
     const showLanguageSelector = supportedLanguages.length > 0 && onLanguageSelected;
     const { config } = this.context;
 
-    // Force footer to be hidden on initial load
-    const footerVisibleClass = (isAtBottom && !isInitialLoad) ? 'footer-visible' : '';
+    const footerVisibleClass = isAtBottom && !isInitialLoad ? 'footer-visible' : '';
 
     return (
       <footer
-        ref={this.footerRef}
         role="contentinfo"
         className={`footer-fixed py-0 px-4 ${footerVisibleClass}`}
         aria-label="Site footer"
-        style={{ display: isInitialLoad ? 'none' : 'flex' }} /* Force hide on initial load */
       >
         <div className="container-fluid footer-container">
           <div className="logo-wrapper">
