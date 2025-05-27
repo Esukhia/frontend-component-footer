@@ -22,20 +22,36 @@ class SiteFooter extends React.Component {
   constructor(props) {
     super(props);
     this.externalLinkClickHandler = this.externalLinkClickHandler.bind(this);
+    this.handleScroll = this.handleScroll.bind(this);
     this.state = {
       isLogoHovered: false,
+      isAtBottom: false,
     };
   }
 
   componentDidMount() {
-    // No event listeners needed
+    window.addEventListener('scroll', this.handleScroll, { passive: true });
+    // Check initial position
+    this.handleScroll();
   }
 
   componentWillUnmount() {
-    // No event listeners to remove
+    window.removeEventListener('scroll', this.handleScroll);
   }
 
-  // Overscroll handlers removed
+  handleScroll() {
+    // Check if we're at the bottom of the page
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+    // Consider "at bottom" when within 20px of the bottom or at the bottom
+    const isAtBottom = (windowHeight + scrollTop) >= (documentHeight - 20);
+
+    if (isAtBottom !== this.state.isAtBottom) {
+      this.setState({ isAtBottom });
+    }
+  }
 
   externalLinkClickHandler(event) {
     const label = event.currentTarget.getAttribute('href');
@@ -54,14 +70,14 @@ class SiteFooter extends React.Component {
       logo,
       intl,
     } = this.props;
-    const { isLogoHovered } = this.state;
+    const { isLogoHovered, isAtBottom } = this.state;
     const showLanguageSelector = supportedLanguages.length > 0 && onLanguageSelected;
     const { config } = this.context;
 
     return (
       <footer
         role="contentinfo"
-        className="footer-fixed py-0 px-4"
+        className={`footer-fixed py-0 px-4 ${isAtBottom ? 'footer-visible' : ''}`}
         aria-label="Site footer"
       >
         <div className="container-fluid footer-container">
