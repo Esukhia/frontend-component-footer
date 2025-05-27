@@ -6,7 +6,7 @@ import { ensureConfig } from '@edx/frontend-platform';
 import { AppContext } from '@edx/frontend-platform/react';
 import messages from './Footer.messages';
 import LanguageSelector from './LanguageSelector';
-import './styles/Logo.css';
+import './styles/FixedFooter.css';
 ensureConfig(['LMS_BASE_URL', 'LOGO_TRADEMARK_URL'], 'Footer component');
 const EVENT_NAMES = {
   FOOTER_LINK: 'edx.bi.footer.link'
@@ -44,9 +44,12 @@ class SiteFooter extends React.Component {
     } = this.context;
     return /*#__PURE__*/React.createElement("footer", {
       role: "contentinfo",
-      className: "footer d-flex border-top py-3 px-4"
+      className: "footer-fixed py-0 px-4",
+      "aria-label": "Site footer"
     }, /*#__PURE__*/React.createElement("div", {
-      className: "container-fluid d-flex"
+      className: "container-fluid footer-container"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "logo-wrapper"
     }, /*#__PURE__*/React.createElement("a", {
       className: `logo-link ${isLogoHovered ? 'logo-link-hover' : ''}`,
       href: config.LMS_BASE_URL,
@@ -61,14 +64,18 @@ class SiteFooter extends React.Component {
       className: "logo-image",
       src: logo || config.LOGO_TRADEMARK_URL,
       alt: intl.formatMessage(messages['footer.logo.altText'])
-    }), /*#__PURE__*/React.createElement("span", {
-      className: `logo-hover-text ${isLogoHovered ? 'logo-hover-text-visible' : ''}`
-    }, intl.formatMessage(messages['footer.logo.hoverText']))), /*#__PURE__*/React.createElement("div", {
+    }), /*#__PURE__*/React.createElement("div", {
+      className: `custom-tooltip ${isLogoHovered ? 'custom-tooltip-visible' : ''}`,
+      role: "tooltip",
+      "aria-hidden": !isLogoHovered
+    }, intl.formatMessage(messages['footer.logo.hoverText'])))), /*#__PURE__*/React.createElement("div", {
       className: "flex-grow-1"
-    }), showLanguageSelector && /*#__PURE__*/React.createElement(LanguageSelector, {
+    }), showLanguageSelector && /*#__PURE__*/React.createElement("div", {
+      className: "language-selector-wrapper"
+    }, /*#__PURE__*/React.createElement(LanguageSelector, {
       options: supportedLanguages,
       onSubmit: onLanguageSelected
-    })));
+    }))));
   }
 }
 SiteFooter.contextType = AppContext;

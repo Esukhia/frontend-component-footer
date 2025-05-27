@@ -1,0 +1,78 @@
+/* Fixed Footer styles */
+.footer-fixed {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 80px; /* Fixed height as required */
+  background-color: #fff;
+  border-top: 1px solid #e7e7e7;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.footer-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+/* Custom tooltip styles */
+.custom-tooltip {
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+  white-space: nowrap;
+  margin-bottom: 5px;
+  pointer-events: none;
+  z-index: 1001;
+}
+
+.custom-tooltip-visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Logo styles */
+.logo-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.logo-link {
+  position: relative;
+  display: block;
+  transition: transform 0.2s ease-in-out;
+}
+
+.logo-link:focus {
+  outline: 2px solid #0075b4;
+  outline-offset: 2px;
+}
+
+.logo-link-hover {
+  transform: scale(1.05);
+}
+
+.logo-image {
+  max-height: 45px;
+}
+
+/* Language selector area */
+.language-selector-wrapper {
+  display: flex;
+  align-items: center;
+}
