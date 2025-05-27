@@ -84,9 +84,9 @@ class SiteFooter extends React.Component {
       document.documentElement.offsetHeight
     );
     
-    // More reliable way to detect bottom of page
-    const bottomThreshold = docHeight - 200; // Show when within 200px of bottom
-    const isAtVeryBottom = scrollPosition >= docHeight - 20;
+    // Only show footer when truly at the end (within 20px)
+    const bottomThreshold = docHeight - 20; // Show only when at the very end
+    const isAtVeryBottom = scrollPosition >= docHeight - 5;
 
     // Update visibility based on scroll position
     const isNearBottom = scrollPosition >= bottomThreshold;
