@@ -1,5 +1,5 @@
 import { defineMessages } from '@edx/frontend-platform/i18n';
-const messages = defineMessages({
+var messages = defineMessages({
   'footer.socialLinks.srText.facebook': {
     id: 'footer.socialLinks.srText.facebook',
     defaultMessage: 'Like edX on Facebook',
