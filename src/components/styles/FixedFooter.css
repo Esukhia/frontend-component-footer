@@ -11,11 +11,9 @@
   display: flex;
   align-items: center;
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
-  /* Initially hidden - using multiple techniques to ensure it's hidden */
+  /* Initially hidden */
   transform: translateY(100%);
   visibility: hidden;
-  opacity: 0;
-  transition: transform 0.3s, visibility 0.3s, opacity 0.3s;
 }
 
 /* Show footer when at bottom of page */

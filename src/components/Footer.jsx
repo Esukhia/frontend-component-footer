@@ -23,7 +23,6 @@ class SiteFooter extends React.Component {
     super(props);
     this.externalLinkClickHandler = this.externalLinkClickHandler.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
-    this.footerRef = React.createRef();
     // Start with footer hidden
     this.state = {
       isLogoHovered: false,
@@ -33,22 +32,11 @@ class SiteFooter extends React.Component {
   }
 
   componentDidMount() {
-    // Ensure footer is hidden on initial load using multiple techniques
-    document.body.classList.remove('has-visible-footer');
-
-    // Force the footer to be hidden initially
-    if (this.footerRef.current) {
-      // Apply inline styles for maximum hiding power
-      this.footerRef.current.style.transform = 'translateY(100%)';
-      this.footerRef.current.style.visibility = 'hidden';
-      this.footerRef.current.style.opacity = '0';
-    }
-
     // Add scroll event listener
     window.addEventListener('scroll', this.handleScroll, { passive: true });
 
     // Set a timeout to mark the initial load phase as complete
-    // This ensures the footer stays hidden on initial load until we've scrolled
+    // This ensures the footer stays hidden on initial load
     setTimeout(() => {
       this.setState({ isInitialLoad: false });
       // Only then check if we should show the footer
