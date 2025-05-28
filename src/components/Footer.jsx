@@ -7,13 +7,12 @@ import { AppContext } from '@edx/frontend-platform/react';
 
 import messages from './Footer.messages';
 import LanguageSelector from './LanguageSelector';
-import './styles/FixedFooter.css';
+import './styles/Footer.css';
 
 ensureConfig([
   'LMS_BASE_URL',
   'LOGO_TRADEMARK_URL',
 ], 'Footer component');
-
 
 const EVENT_NAMES = {
   FOOTER_LINK: 'edx.bi.footer.link',
@@ -52,7 +51,7 @@ class SiteFooter extends React.Component {
     return (
       <footer
         role="contentinfo"
-        className="footer-fixed py-0 px-4"
+        className="footer py-0 px-4"
         aria-label="Site footer"
       >
         <div className="container-fluid footer-container">

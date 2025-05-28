@@ -1,16 +1,15 @@
-/* Fixed Footer styles */
-.footer-fixed {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 80px; /* Fixed height as required */
+/* Footer styles - positioned at end of page */
+.footer {
+  /* Standard positioning */
+  position: relative;
+  height: 80px;
   background-color: #fff;
   border-top: 1px solid #e7e7e7;
-  z-index: 1000;
+  z-index: 10; /* Reduced z-index since it's not overlaying content */
   display: flex;
   align-items: center;
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
+  margin-top: 2rem; /* Add some spacing above the footer */
 }
 
 .footer-container {
