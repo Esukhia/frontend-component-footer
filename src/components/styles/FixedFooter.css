@@ -1,32 +1,17 @@
-/* Footer styles */
+/* Fixed Footer styles */
 .footer-fixed {
   position: fixed;
   bottom: 0;
   left: 0;
   right: 0;
-  height: 80px;
+  height: 80px; /* Fixed height as required */
   background-color: #fff;
   border-top: 1px solid #e7e7e7;
   z-index: 1000;
   display: flex;
   align-items: center;
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
-  /* Initially hidden */
-  transform: translateY(100%);
-  visibility: hidden;
 }
-
-/* Show footer when at bottom of page */
-.footer-visible {
-  transform: translateY(0);
-  visibility: visible;
-}
-
-/* Add padding to body when footer is visible to prevent content from being hidden */
-body.has-visible-footer {
-  padding-bottom: 80px; /* Same as footer height */
-}
-
 
 .footer-container {
   display: flex;
