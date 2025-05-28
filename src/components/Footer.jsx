@@ -54,8 +54,13 @@ class SiteFooter extends React.Component {
     const documentHeight = document.documentElement.scrollHeight;
     const scrollTop = window.scrollY || document.documentElement.scrollTop;
 
-    // Use a consistent threshold regardless of current footer state
-    const bottomThreshold = 20;
+    // Add hysteresis to prevent stuttering
+    // Use different thresholds for showing vs hiding to create a buffer zone
+    const showThreshold = 20; // Show when within 20px of bottom
+    const hideThreshold = 50; // Hide only when 50px away from bottom
+
+    // Use the appropriate threshold based on current state
+    const bottomThreshold = this.state.isAtBottom ? hideThreshold : showThreshold;
 
     // Consider "at bottom" when within threshold of the bottom
     const isAtBottom = (windowHeight + scrollTop) >= (documentHeight - bottomThreshold);
