@@ -156,6 +156,21 @@ const messages = defineMessages({
     defaultMessage: 'Go to main page',
     description: 'Hover text for the footer logo that indicates clicking will return to home page.',
   },
+  'footer.colophon.about': {
+    id: 'footer.colophon.about',
+    defaultMessage: 'About Us',
+    description: 'Footer link to About Us page',
+  },
+  'footer.colophon.contact': {
+    id: 'footer.colophon.contact',
+    defaultMessage: 'Contact Us',
+    description: 'Footer link to Contact Us page',
+  },
+  'footer.colophon.privacy': {
+    id: 'footer.colophon.privacy',
+    defaultMessage: 'Privacy Policy',
+    description: 'Footer link to Privacy Policy page',
+  },
 });
 
 export default messages;

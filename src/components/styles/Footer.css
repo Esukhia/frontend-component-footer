@@ -91,3 +91,16 @@ body.has-visible-footer {
   display: flex;
   align-items: center;
 }
+
+/* Add spacing between footer links */
+.footer-colophon .footer-link {
+  margin-right: 24px;
+}
+.footer-colophon .footer-link:last-child {
+  margin-right: 0;
+}
+
+/* Add spacing between logo and colophon */
+.logo-wrapper > .footer-colophon {
+  margin-left: 40px;
+}

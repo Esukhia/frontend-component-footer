@@ -108,6 +108,7 @@ class SiteFooter extends React.Component {
       >
         <div className="container-fluid footer-container">
           <div className="logo-wrapper">
+      
             <a
               className={`logo-link ${isLogoHovered ? 'logo-link-hover' : ''}`}
               href={config.LMS_BASE_URL}
@@ -128,6 +129,29 @@ class SiteFooter extends React.Component {
                 {intl.formatMessage(messages['footer.logo.hoverText'])}
               </div>
             </a>
+            <nav className="footer-colophon">
+              <a
+                href={`${config.LMS_BASE_URL}/about`}
+                onClick={this.externalLinkClickHandler}
+                className="footer-link"
+              >
+                {intl.formatMessage(messages['footer.colophon.about'])}
+              </a>
+              <a
+                href={`${config.LMS_BASE_URL}/contact`}
+                onClick={this.externalLinkClickHandler}
+                className="footer-link"
+              >
+                {intl.formatMessage(messages['footer.colophon.contact'])}
+              </a> 
+              <a
+                href={`${config.LMS_BASE_URL}/privacy`}
+                onClick={this.externalLinkClickHandler}
+                className="footer-link"
+              >
+                {intl.formatMessage(messages['footer.colophon.privacy'])}
+              </a>
+            </nav>
           </div>
 
           <div className="flex-grow-1" />
