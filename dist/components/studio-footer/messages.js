@@ -1,5 +1,5 @@
 import { defineMessages } from '@edx/frontend-platform/i18n';
-const messages = defineMessages({
+var messages = defineMessages({
   openHelpButtonLabel: {
     id: 'authoring.footer.help.openHelp.button.label',
     defaultMessage: 'Looking for help with Studio?',
