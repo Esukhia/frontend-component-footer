@@ -1,7 +1,28 @@
+/* Set up the page structure to keep footer at bottom */
+html, body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensure the body takes at least the full viewport height */
+}
+
+/* Main content should grow to push footer down */
+#root, .app, main {
+  flex: 1 0 auto; /* Grow to fill available space */
+  display: flex;
+  flex-direction: column;
+}
+
 /* Footer styles */
 .footer-fixed {
-  position: static; /* Changed from fixed to static */
-  height: 80px; /* Fixed height as required */
+  position: static;
+  height: 80px; /* Fixed height as required - this is enforced */
+  min-height: 80px; /* Ensure minimum height */
+  max-height: 80px; /* Ensure maximum height */
   background-color: #fff;
   border-top: 1px solid #e7e7e7;
   display: flex;
@@ -9,6 +30,7 @@
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
   width: 100%;
   margin-top: 2rem; /* Add some spacing above the footer */
+  flex-shrink: 0; /* Prevent footer from shrinking */
 }
 
 

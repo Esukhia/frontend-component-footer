@@ -22,13 +22,11 @@ class SiteFooter extends React.Component {
   constructor(props) {
     super(props);
     this.externalLinkClickHandler = this.externalLinkClickHandler.bind(this);
-    // No need for scroll handling with static footer
+
     this.state = {
       isLogoHovered: false,
     };
   }
-
-  // No lifecycle methods needed for static footer
 
   externalLinkClickHandler(event) {
     const label = event.currentTarget.getAttribute('href');
