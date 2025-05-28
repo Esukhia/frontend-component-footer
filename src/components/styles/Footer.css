@@ -1,0 +1,129 @@
+/* Footer styles */
+body {
+  padding-bottom: 100px; /* reserve space for the footer */
+}
+
+.footer-fixed {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 75px; /* Fixed heigh */
+  background-color: #fff;
+  border-top: 1px solid #e7e7e7;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
+  /* Initially hidden */
+  transform: translateY(100%);
+  visibility: hidden;
+}
+
+/* Show footer when at bottom of page */
+.footer-visible {
+  transform: translateY(0);
+  visibility: visible;
+}
+
+.footer-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+/* Custom tooltip styles */
+.custom-tooltip {
+  position: absolute;
+  top: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s, visibility 0.3s;
+  white-space: nowrap;
+  margin-bottom: 5px;
+  pointer-events: none;
+  z-index: 1001;
+}
+
+.custom-tooltip-visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Logo styles */
+.logo-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.logo-link {
+  position: relative;
+  display: block;
+  transition: transform 0.2s ease-in-out;
+}
+
+.logo-link:focus {
+  outline: none;
+}
+.logo-link:focus-visible {
+  outline: 2px solid #0075b4;
+  outline-offset: 2px;
+}
+
+.logo-link-hover {
+  transform: scale(1.05);
+}
+
+.logo-image {
+  max-height: 45px;
+}
+
+/* Language selector area */
+.language-selector-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+/* spacing between footer links */
+.footer-colophon .footer-link {
+  margin-right: 24px;
+  font-size: 17px;
+}
+.footer-colophon .footer-link:last-child {
+  margin-right: 0;
+}
+
+/* spacing between logo and colophon */
+.logo-wrapper > .footer-colophon {
+  margin-left: 33px;
+}
+
+/* Responsive adjustments for footer links */
+@media (max-width: 600px) {
+  .footer-colophon {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    font-size: 13px;
+    margin-left: 12px;
+  }
+  .footer-colophon .footer-link {
+    margin-right: 12px;
+    font-size: 13px;
+  }
+  .footer-colophon .footer-link:last-child {
+    margin-right: 0;
+  }
+  .logo-wrapper > .footer-colophon {
+    margin-left: 12px;
+  }
+}
