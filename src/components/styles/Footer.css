@@ -1,6 +1,6 @@
 /* Footer styles */
 body {
-  padding-bottom: 100px; /* Always reserve space for the footer */
+  padding-bottom: 100px; /* reserve space for the footer */
 }
 
 .footer-fixed {
@@ -8,7 +8,7 @@ body {
   bottom: 0;
   left: 0;
   right: 0;
-  height: 75px; /* Fixed height as required */
+  height: 75px; /* Fixed heigh */
   background-color: #fff;
   border-top: 1px solid #e7e7e7;
   z-index: 1000;
@@ -25,9 +25,6 @@ body {
   transform: translateY(0);
   visibility: visible;
 }
-
-/* Add padding to body when footer is visible to prevent content from being hidden */
-
 
 .footer-container {
   display: flex;

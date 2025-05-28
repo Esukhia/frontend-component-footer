@@ -65,8 +65,6 @@ class SiteFooter extends React.Component {
     // Only update if the state has changed
     if (isAtBottom !== this.state.isAtBottom) {
       this.setState({ isAtBottom });
-
-      
     }
   }
 
