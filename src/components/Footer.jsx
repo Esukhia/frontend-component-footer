@@ -22,67 +22,13 @@ class SiteFooter extends React.Component {
   constructor(props) {
     super(props);
     this.externalLinkClickHandler = this.externalLinkClickHandler.bind(this);
-    this.handleScroll = this.handleScroll.bind(this);
-    // Start with footer hidden
+    // No need for scroll handling with static footer
     this.state = {
       isLogoHovered: false,
-      isAtBottom: false,
-      isInitialLoad: true, // Track initial page load
     };
-
-    // Add debounce timer to prevent stuttering
-    this.scrollTimer = null;
-    this.scrollDelay = 150; // ms delay for debounce
   }
 
-  componentDidMount() {
-    // Add scroll event listener
-    window.addEventListener('scroll', this.handleScroll, { passive: true });
-
-    // Set a timeout to mark the initial load phase as complete
-    // This ensures the footer stays hidden on initial load
-    setTimeout(() => {
-      this.setState({ isInitialLoad: false });
-      // Only then check if we should show the footer
-      this.handleScroll();
-    }, 500);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleScroll);
-  }
-
-  handleScroll() {
-    // Clear any existing timer to implement debouncing
-    if (this.scrollTimer) {
-      clearTimeout(this.scrollTimer);
-    }
-
-    // Set a new timer to delay the scroll handler execution
-    this.scrollTimer = setTimeout(() => {
-      // Check if we're at the bottom of the page
-      const windowHeight = window.innerHeight;
-      const documentHeight = document.documentElement.scrollHeight;
-      const scrollTop = window.scrollY || document.documentElement.scrollTop;
-
-      // Use a consistent threshold for determining bottom of page
-      const bottomThreshold = 20;
-
-      // Consider "at bottom" when within threshold of the bottom
-      const isAtBottom = (windowHeight + scrollTop) >= (documentHeight - bottomThreshold);
-
-      // Only update if the state has changed
-      if (isAtBottom !== this.state.isAtBottom) {
-        this.setState({ isAtBottom });
-
-        // Only manipulate the DOM class if we're past the initial load
-        if (!this.state.isInitialLoad) {
-          // Use toggle instead of add/remove for cleaner code
-          document.body.classList.toggle('has-visible-footer', isAtBottom);
-        }
-      }
-    }, this.scrollDelay);
-  }
+  // No lifecycle methods needed for static footer
 
   externalLinkClickHandler(event) {
     const label = event.currentTarget.getAttribute('href');
@@ -101,16 +47,14 @@ class SiteFooter extends React.Component {
       logo,
       intl,
     } = this.props;
-    const { isLogoHovered, isAtBottom, isInitialLoad } = this.state;
+    const { isLogoHovered } = this.state;
     const showLanguageSelector = supportedLanguages.length > 0 && onLanguageSelected;
     const { config } = this.context;
-
-    const footerVisibleClass = isAtBottom && !isInitialLoad ? 'footer-visible' : '';
 
     return (
       <footer
         role="contentinfo"
-        className={`footer-fixed py-0 px-4 ${footerVisibleClass}`}
+        className="footer-fixed py-0 px-4"
         aria-label="Site footer"
       >
         <div className="container-fluid footer-container">
