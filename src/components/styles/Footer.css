@@ -74,6 +74,9 @@ body.has-visible-footer {
 }
 
 .logo-link:focus {
+  outline: none;
+}
+.logo-link:focus-visible {
   outline: 2px solid #0075b4;
   outline-offset: 2px;
 }

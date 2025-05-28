@@ -108,7 +108,7 @@ class SiteFooter extends React.Component {
       >
         <div className="container-fluid footer-container">
           <div className="logo-wrapper">
-      
+
             <a
               className={`logo-link ${isLogoHovered ? 'logo-link-hover' : ''}`}
               href={config.LMS_BASE_URL}
@@ -143,7 +143,7 @@ class SiteFooter extends React.Component {
                 className="footer-link"
               >
                 {intl.formatMessage(messages['footer.colophon.contact'])}
-              </a> 
+              </a>
               <a
                 href={`${config.LMS_BASE_URL}/privacy`}
                 onClick={this.externalLinkClickHandler}
