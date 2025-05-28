@@ -4,7 +4,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  height: 80px; /* Fixed height as required */
+  height: 75px; /* Fixed height as required */
   background-color: #fff;
   border-top: 1px solid #e7e7e7;
   z-index: 1000;
@@ -24,7 +24,7 @@
 
 /* Add padding to body when footer is visible to prevent content from being hidden */
 body.has-visible-footer {
-  padding-bottom: 80px; /* Same as footer height */
+  padding-bottom: 100px; /* Same as footer height */
 }
 
 
@@ -95,6 +95,7 @@ body.has-visible-footer {
 /* spacing between footer links */
 .footer-colophon .footer-link {
   margin-right: 24px;
+  font-size: 17px;
 }
 .footer-colophon .footer-link:last-child {
   margin-right: 0;
@@ -111,11 +112,12 @@ body.has-visible-footer {
     display: flex;
     flex-wrap: wrap;
     gap: 8px 12px;
-    font-size: 14px;
+    font-size: 13px;
     margin-left: 12px;
   }
   .footer-colophon .footer-link {
     margin-right: 12px;
+    font-size: 13px;
   }
   .footer-colophon .footer-link:last-child {
     margin-right: 0;
