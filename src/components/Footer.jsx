@@ -29,6 +29,10 @@ class SiteFooter extends React.Component {
       isAtBottom: false,
       isInitialLoad: true, // Track initial page load
     };
+
+    // Add debounce timer to prevent stuttering
+    this.scrollTimer = null;
+    this.scrollDelay = 150; // ms delay for debounce
   }
 
   componentDidMount() {
@@ -49,35 +53,35 @@ class SiteFooter extends React.Component {
   }
 
   handleScroll() {
-    // Check if we're at the bottom of the page
-    const windowHeight = window.innerHeight;
-    const documentHeight = document.documentElement.scrollHeight;
-    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    // Clear any existing timer to implement debouncing
+    if (this.scrollTimer) {
+      clearTimeout(this.scrollTimer);
+    }
 
-    // Add hysteresis to prevent stuttering
-    // Use different thresholds for showing vs hiding to create a buffer zone
-    const showThreshold = 20; // Show when within 20px of bottom
-    const hideThreshold = 50; // Hide only when 50px away from bottom
+    // Set a new timer to delay the scroll handler execution
+    this.scrollTimer = setTimeout(() => {
+      // Check if we're at the bottom of the page
+      const windowHeight = window.innerHeight;
+      const documentHeight = document.documentElement.scrollHeight;
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
 
-    // Use the appropriate threshold based on current state
-    const bottomThreshold = this.state.isAtBottom ? hideThreshold : showThreshold;
+      // Use a consistent threshold for determining bottom of page
+      const bottomThreshold = 20;
 
-    // Consider "at bottom" when within threshold of the bottom
-    const isAtBottom = (windowHeight + scrollTop) >= (documentHeight - bottomThreshold);
+      // Consider "at bottom" when within threshold of the bottom
+      const isAtBottom = (windowHeight + scrollTop) >= (documentHeight - bottomThreshold);
 
-    // Only update if the state has changed
-    if (isAtBottom !== this.state.isAtBottom) {
-      this.setState({ isAtBottom });
+      // Only update if the state has changed
+      if (isAtBottom !== this.state.isAtBottom) {
+        this.setState({ isAtBottom });
 
-      // Use a small delay to avoid immediate layout recalculation
-      // Only manipulate the DOM class if we're past the initial load
-      if (!this.state.isInitialLoad) {
-        setTimeout(() => {
+        // Only manipulate the DOM class if we're past the initial load
+        if (!this.state.isInitialLoad) {
           // Use toggle instead of add/remove for cleaner code
           document.body.classList.toggle('has-visible-footer', isAtBottom);
-        }, 10);
+        }
       }
-    }
+    }, this.scrollDelay);
   }
 
   externalLinkClickHandler(event) {
