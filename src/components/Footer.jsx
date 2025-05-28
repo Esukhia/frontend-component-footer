@@ -66,14 +66,7 @@ class SiteFooter extends React.Component {
     if (isAtBottom !== this.state.isAtBottom) {
       this.setState({ isAtBottom });
 
-      // Use a small delay to avoid immediate layout recalculation
-      // Only manipulate the DOM class if we're past the initial load
-      if (!this.state.isInitialLoad) {
-        setTimeout(() => {
-          // Use toggle instead of add/remove for cleaner code
-          document.body.classList.toggle('has-visible-footer', isAtBottom);
-        }, 10);
-      }
+      
     }
   }
 
