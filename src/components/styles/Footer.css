@@ -92,7 +92,7 @@ body.has-visible-footer {
   align-items: center;
 }
 
-/* Add spacing between footer links */
+/* spacing between footer links */
 .footer-colophon .footer-link {
   margin-right: 24px;
 }
@@ -100,7 +100,27 @@ body.has-visible-footer {
   margin-right: 0;
 }
 
-/* Add spacing between logo and colophon */
+/* spacing between logo and colophon */
 .logo-wrapper > .footer-colophon {
   margin-left: 40px;
+}
+
+/* Responsive adjustments for footer links */
+@media (max-width: 600px) {
+  .footer-colophon {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 12px;
+    font-size: 14px;
+    margin-left: 12px;
+  }
+  .footer-colophon .footer-link {
+    margin-right: 12px;
+  }
+  .footer-colophon .footer-link:last-child {
+    margin-right: 0;
+  }
+  .logo-wrapper > .footer-colophon {
+    margin-left: 12px;
+  }
 }
