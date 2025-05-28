@@ -1,15 +1,34 @@
-/* Footer styles - positioned at end of page */
+/* Root element styles for sticky footer pattern */
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+/* Main content wrapper - this should be applied to your app's main container */
+.site-wrapper {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Content area that will expand to push footer down */
+.site-content {
+  flex: 1 0 auto;
+}
+
+/* Footer styles - will stay at bottom */
 .footer {
-  /* Standard positioning */
-  position: relative;
+  flex-shrink: 0;
   height: 80px;
   background-color: #fff;
   border-top: 1px solid #e7e7e7;
-  z-index: 10; /* Reduced z-index since it's not overlaying content */
+  z-index: 10;
   display: flex;
   align-items: center;
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
-  margin-top: 2rem; /* Add some spacing above the footer */
 }
 
 .footer-container {
