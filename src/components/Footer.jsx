@@ -57,7 +57,8 @@ class SiteFooter extends React.Component {
     // Add padding to the calculation to account for the footer height
     // This prevents the stuttering effect when scrolling slowly
     const footerHeight = 80; // Same as in CSS
-    const bottomThreshold = this.state.isAtBottom ? (20 + footerHeight) : 20;
+    // Using a smaller threshold when footer is visible to make it hide quicker when scrolling up
+    const bottomThreshold = this.state.isAtBottom ? 30 : 20;
 
     // Consider "at bottom" when within threshold of the bottom
     const isAtBottom = (windowHeight + scrollTop) >= (documentHeight - bottomThreshold);
