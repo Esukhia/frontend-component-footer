@@ -64,6 +64,7 @@ body {
   position: relative;
   display: flex;
   align-items: center;
+  flex-wrap: nowrap; /* Prevent wrapping */
 }
 
 .logo-link {
@@ -86,6 +87,9 @@ body {
 
 .logo-image {
   max-height: 45px;
+  width: auto;
+  max-width: 100%;
+  height: auto;
 }
 
 /* Language selector area */
@@ -98,6 +102,7 @@ body {
 .footer-colophon .footer-link {
   margin-right: 24px;
   font-size: 17px;
+  white-space: nowrap; /* Prevent text wrapping */
 }
 .footer-colophon .footer-link:last-child {
   margin-right: 0;
@@ -106,25 +111,71 @@ body {
 /* spacing between logo and colophon */
 .logo-wrapper > .footer-colophon {
   margin-left: 33px;
+  display: flex;
+  flex-wrap: nowrap; /* Prevent wrapping */
+  align-items: center;
 }
 
-/* Responsive adjustments for footer links */
+/* Responsive adjustments for footer */
+@media (max-width: 992px) {
+  /* Only adjust spacing at this breakpoint */
+  .footer-container {
+    padding: 0 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  /* Reduce margins between elements */
+  .logo-wrapper > .footer-colophon {
+    margin-left: 20px;
+  }
+  
+  .footer-colophon .footer-link {
+    margin-right: 16px;
+  }
+}
+
 @media (max-width: 600px) {
+  /* At small screens, reduce size to prevent stacking */
+  .logo-image {
+    max-height: 35px;
+  }
+  
   .footer-colophon {
     display: flex;
-    flex-wrap: wrap;
-    gap: 8px 12px;
-    font-size: 13px;
-    margin-left: 12px;
+    flex-wrap: nowrap;
   }
+  
   .footer-colophon .footer-link {
     margin-right: 12px;
     font-size: 13px;
   }
-  .footer-colophon .footer-link:last-child {
-    margin-right: 0;
-  }
+  
   .logo-wrapper > .footer-colophon {
     margin-left: 12px;
+  }
+  
+  /* Ensure everything stays on one line */
+  .footer-container {
+    justify-content: space-between;
+    overflow-x: auto; /* Allow horizontal scrolling if needed */
+    -ms-overflow-style: none; /* Hide scrollbar in IE and Edge */
+    scrollbar-width: none; /* Hide scrollbar in Firefox */
+  }
+  
+  .footer-container::-webkit-scrollbar {
+    display: none; /* Hide scrollbar in Chrome, Safari, and Opera */
+  }
+}
+
+@media (max-width: 480px) {
+  /* At very small screens, reduce size further */
+  .logo-image {
+    max-height: 30px;
+  }
+  
+  .footer-colophon .footer-link {
+    font-size: 12px;
+    margin-right: 8px;
   }
 }
