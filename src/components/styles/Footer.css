@@ -64,6 +64,7 @@ body {
   position: relative;
   display: flex;
   align-items: center;
+  flex-wrap: nowrap; /* Prevent wrapping */
 }
 
 .logo-link {
@@ -86,6 +87,10 @@ body {
 
 .logo-image {
   max-height: 45px;
+  width: auto;
+  /* Make logo responsive */
+  max-width: 100%;
+  height: auto;
 }
 
 /* Language selector area */
@@ -97,7 +102,8 @@ body {
 /* spacing between footer links */
 .footer-colophon .footer-link {
   margin-right: 24px;
-  font-size: 17px;
+  font-size: clamp(12px, 1.2vw, 17px); /* Responsive font size */
+  white-space: nowrap; /* Prevent text wrapping */
 }
 .footer-colophon .footer-link:last-child {
   margin-right: 0;
@@ -105,26 +111,47 @@ body {
 
 /* spacing between logo and colophon */
 .logo-wrapper > .footer-colophon {
-  margin-left: 33px;
+  margin-left: clamp(12px, 2.5vw, 33px); /* Responsive margin */
+  display: flex;
+  flex-wrap: nowrap; /* Prevent wrapping */
+  align-items: center;
 }
 
-/* Responsive adjustments for footer links */
+/* Responsive adjustments for footer */
+@media (max-width: 768px) {
+  .logo-image {
+    max-height: clamp(30px, 5vw, 45px); /* Responsive logo size */
+  }
+  
+  .footer-container {
+    padding: 0 10px;
+  }
+}
+
 @media (max-width: 600px) {
   .footer-colophon {
     display: flex;
-    flex-wrap: wrap;
-    gap: 8px 12px;
-    font-size: 13px;
-    margin-left: 12px;
+    flex-wrap: nowrap; /* Keep on single line */
+    font-size: clamp(10px, 2.5vw, 13px);
   }
+  
   .footer-colophon .footer-link {
-    margin-right: 12px;
-    font-size: 13px;
+    margin-right: clamp(6px, 1.5vw, 12px);
   }
-  .footer-colophon .footer-link:last-child {
-    margin-right: 0;
-  }
+  
   .logo-wrapper > .footer-colophon {
-    margin-left: 12px;
+    margin-left: clamp(8px, 1.5vw, 12px);
+  }
+  
+  /* Ensure everything stays on one line */
+  .footer-container {
+    justify-content: space-between;
+    overflow-x: auto; /* Allow horizontal scrolling if needed */
+    -ms-overflow-style: none; /* Hide scrollbar in IE and Edge */
+    scrollbar-width: none; /* Hide scrollbar in Firefox */
+  }
+  
+  .footer-container::-webkit-scrollbar {
+    display: none; /* Hide scrollbar in Chrome, Safari, and Opera */
   }
 }
