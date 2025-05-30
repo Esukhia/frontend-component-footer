@@ -88,7 +88,6 @@ body {
 .logo-image {
   max-height: 45px;
   width: auto;
-  /* Make logo responsive */
   max-width: 100%;
   height: auto;
 }
@@ -102,7 +101,7 @@ body {
 /* spacing between footer links */
 .footer-colophon .footer-link {
   margin-right: 24px;
-  font-size: clamp(12px, 1.2vw, 17px); /* Responsive font size */
+  font-size: 17px;
   white-space: nowrap; /* Prevent text wrapping */
 }
 .footer-colophon .footer-link:last-child {
@@ -111,36 +110,49 @@ body {
 
 /* spacing between logo and colophon */
 .logo-wrapper > .footer-colophon {
-  margin-left: clamp(12px, 2.5vw, 33px); /* Responsive margin */
+  margin-left: 33px;
   display: flex;
   flex-wrap: nowrap; /* Prevent wrapping */
   align-items: center;
 }
 
 /* Responsive adjustments for footer */
-@media (max-width: 768px) {
-  .logo-image {
-    max-height: clamp(30px, 5vw, 45px); /* Responsive logo size */
-  }
-  
+@media (max-width: 992px) {
+  /* Only adjust spacing at this breakpoint */
   .footer-container {
     padding: 0 10px;
   }
 }
 
-@media (max-width: 600px) {
-  .footer-colophon {
-    display: flex;
-    flex-wrap: nowrap; /* Keep on single line */
-    font-size: clamp(10px, 2.5vw, 13px);
+@media (max-width: 768px) {
+  /* Reduce margins between elements */
+  .logo-wrapper > .footer-colophon {
+    margin-left: 20px;
   }
   
   .footer-colophon .footer-link {
-    margin-right: clamp(6px, 1.5vw, 12px);
+    margin-right: 16px;
+  }
+}
+
+@media (max-width: 600px) {
+  /* At small screens, reduce size to prevent stacking */
+  .logo-image {
+    max-height: 35px;
+  }
+  
+  .footer-colophon {
+    display: flex;
+    flex-wrap: nowrap;
+  }
+  
+  .footer-colophon .footer-link {
+    margin-right: 12px;
+    font-size: 13px;
   }
   
   .logo-wrapper > .footer-colophon {
-    margin-left: clamp(8px, 1.5vw, 12px);
+    margin-left: 12px;
   }
   
   /* Ensure everything stays on one line */
@@ -153,5 +165,17 @@ body {
   
   .footer-container::-webkit-scrollbar {
     display: none; /* Hide scrollbar in Chrome, Safari, and Opera */
+  }
+}
+
+@media (max-width: 480px) {
+  /* At very small screens, reduce size further */
+  .logo-image {
+    max-height: 30px;
+  }
+  
+  .footer-colophon .footer-link {
+    font-size: 12px;
+    margin-right: 8px;
   }
 }
