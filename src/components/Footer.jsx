@@ -7,14 +7,12 @@ import { AppContext } from '@edx/frontend-platform/react';
 
 import messages from './Footer.messages';
 import LanguageSelector from './LanguageSelector';
-import './styles/Logo.css';
+import './styles/Footer.css';
 
 ensureConfig([
   'LMS_BASE_URL',
   'LOGO_TRADEMARK_URL',
 ], 'Footer component');
-
-
 
 const EVENT_NAMES = {
   FOOTER_LINK: 'edx.bi.footer.link',
@@ -24,9 +22,51 @@ class SiteFooter extends React.Component {
   constructor(props) {
     super(props);
     this.externalLinkClickHandler = this.externalLinkClickHandler.bind(this);
+    this.handleScroll = this.handleScroll.bind(this);
+    // Start with footer hidden
     this.state = {
       isLogoHovered: false,
+      isAtBottom: false,
+      isInitialLoad: true, // Track initial page load
     };
+  }
+
+  componentDidMount() {
+    // Add scroll event listener
+    window.addEventListener('scroll', this.handleScroll, { passive: true });
+
+    // Set a timeout to mark the initial load phase as complete
+    // This ensures the footer stays hidden on initial load
+    setTimeout(() => {
+      this.setState({ isInitialLoad: false });
+      // Only then check if we should show the footer
+      this.handleScroll();
+    }, 500);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.handleScroll);
+  }
+
+  handleScroll() {
+    // Check if we're at the bottom of the page
+    const windowHeight = window.innerHeight;
+    const documentHeight = document.documentElement.scrollHeight;
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+    // Add padding to the calculation to account for the footer height
+    // This prevents the stuttering effect when scrolling slowly
+    const footerHeight = 80; // Same as in CSS
+    // Using a smaller threshold when footer is visible to make it hide quicker when scrolling up
+    const bottomThreshold = this.state.isAtBottom ? 30 : 20;
+
+    // Consider "at bottom" when within threshold of the bottom
+    const isAtBottom = (windowHeight + scrollTop) >= (documentHeight - bottomThreshold);
+
+    // Only update if the state has changed
+    if (isAtBottom !== this.state.isAtBottom) {
+      this.setState({ isAtBottom });
+    }
   }
 
   externalLinkClickHandler(event) {
@@ -46,38 +86,75 @@ class SiteFooter extends React.Component {
       logo,
       intl,
     } = this.props;
-    const { isLogoHovered } = this.state;
+    const { isLogoHovered, isAtBottom, isInitialLoad } = this.state;
     const showLanguageSelector = supportedLanguages.length > 0 && onLanguageSelected;
     const { config } = this.context;
+
+    const footerVisibleClass = isAtBottom && !isInitialLoad ? 'footer-visible' : '';
 
     return (
       <footer
         role="contentinfo"
-        className="footer d-flex border-top py-3 px-4"
+        className={`footer-fixed py-0 px-4 ${footerVisibleClass}`}
+        aria-label="Site footer"
       >
-        <div className="container-fluid d-flex">
-          <a
-            className={`logo-link ${isLogoHovered ? 'logo-link-hover' : ''}`}
-            href={config.LMS_BASE_URL}
-            aria-label={intl.formatMessage(messages['footer.logo.ariaLabel'])}
-            onMouseEnter={() => this.setState({ isLogoHovered: true })}
-            onMouseLeave={() => this.setState({ isLogoHovered: false })}
-          >
-            <img
-              className="logo-image"
-              src={logo || config.LOGO_TRADEMARK_URL}
-              alt={intl.formatMessage(messages['footer.logo.altText'])}
-            />
-            <span className={`logo-hover-text ${isLogoHovered ? 'logo-hover-text-visible' : ''}`}>
-              {intl.formatMessage(messages['footer.logo.hoverText'])}
-            </span>
-          </a>
+        <div className="container-fluid footer-container">
+          <div className="logo-wrapper">
+
+            <a
+              className={`logo-link ${isLogoHovered ? 'logo-link-hover' : ''}`}
+              href={config.LMS_BASE_URL}
+              aria-label={intl.formatMessage(messages['footer.logo.ariaLabel'])}
+              onMouseEnter={() => this.setState({ isLogoHovered: true })}
+              onMouseLeave={() => this.setState({ isLogoHovered: false })}
+            >
+              <img
+                className="logo-image"
+                src={logo || config.LOGO_TRADEMARK_URL}
+                alt={intl.formatMessage(messages['footer.logo.altText'])}
+              />
+              <div
+                className={`custom-tooltip ${isLogoHovered ? 'custom-tooltip-visible' : ''}`}
+                role="tooltip"
+                aria-hidden={!isLogoHovered}
+              >
+                {intl.formatMessage(messages['footer.logo.hoverText'])}
+              </div>
+            </a>
+            <nav className="footer-colophon">
+              <a
+                href={`${config.LMS_BASE_URL}/about`}
+                onClick={this.externalLinkClickHandler}
+                className="footer-link"
+              >
+                {intl.formatMessage(messages['footer.colophon.about'])}
+              </a>
+              <a
+                href={`${config.LMS_BASE_URL}/contact`}
+                onClick={this.externalLinkClickHandler}
+                className="footer-link"
+              >
+                {intl.formatMessage(messages['footer.colophon.contact'])}
+              </a>
+              <a
+                href={`${config.LMS_BASE_URL}/privacy`}
+                onClick={this.externalLinkClickHandler}
+                className="footer-link"
+              >
+                {intl.formatMessage(messages['footer.colophon.privacy'])}
+              </a>
+            </nav>
+          </div>
+
           <div className="flex-grow-1" />
+
           {showLanguageSelector && (
-            <LanguageSelector
-              options={supportedLanguages}
-              onSubmit={onLanguageSelected}
-            />
+            <div className="language-selector-wrapper">
+              <LanguageSelector
+                options={supportedLanguages}
+                onSubmit={onLanguageSelected}
+              />
+            </div>
           )}
         </div>
       </footer>

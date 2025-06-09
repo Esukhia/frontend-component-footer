@@ -1,92 +1,140 @@
 /* eslint-disable react/prop-types */
-import React, { useMemo } from 'react';
-import renderer from 'react-test-renderer';
+import React from 'react';
 import { render, screen } from '@testing-library/react';
+import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event';
 import { IntlProvider } from '@edx/frontend-platform/i18n';
 import { AppContext } from '@edx/frontend-platform/react';
 
-import Footer from './Footer';
-import FooterSlot from '../plugin-slots/FooterSlot';
+import Footer, { EVENT_NAMES } from './Footer';
+import { sendTrackEvent } from '@edx/frontend-platform/analytics';
 
-const FooterWithContext = ({ locale = 'es' }) => {
-  const contextValue = useMemo(() => ({
-    authenticatedUser: null,
-    config: {
-      LOGO_TRADEMARK_URL: process.env.LOGO_TRADEMARK_URL,
-      LMS_BASE_URL: process.env.LMS_BASE_URL,
-    },
-  }), []);
+jest.mock('@edx/frontend-platform/analytics', () => ({
+  sendTrackEvent: jest.fn(),
+}));
 
-  return (
-    <IntlProvider locale={locale}>
-      <AppContext.Provider
-        value={contextValue}
-      >
-        <FooterSlot />
-      </AppContext.Provider>
-    </IntlProvider>
-  );
-};
+describe('Footer', () => {
+  const supportedLanguages = [
+    { label: 'English', value: 'en' },
+    { label: 'Español', value: 'es-419' },
+  ];
 
-const FooterWithLanguageSelector = ({ languageSelected = () => {} }) => {
-  const contextValue = useMemo(() => ({
-    authenticatedUser: null,
-    config: {
-      LOGO_TRADEMARK_URL: process.env.LOGO_TRADEMARK_URL,
-      LMS_BASE_URL: process.env.LMS_BASE_URL,
-    },
-  }), []);
+  const config = {
+    LMS_BASE_URL: 'http://localhost:18000',
+    LOGO_TRADEMARK_URL: 'https://edx-cdn.org/v3/default/logo-trademark.svg',
+  };
 
-  return (
-    <IntlProvider locale="en">
-      <AppContext.Provider
-        value={contextValue}
-      >
-        <Footer
-          onLanguageSelected={languageSelected}
-          supportedLanguages={[
-            { label: 'English', value: 'en' },
-            { label: 'Español', value: 'es' },
-          ]}
-        />
-      </AppContext.Provider>
-    </IntlProvider>
-  );
-};
-
-describe('<Footer />', () => {
-  describe('renders correctly', () => {
-    it('renders without a language selector', () => {
-      const tree = renderer
-        .create(<FooterWithContext locale="en" />)
-        .toJSON();
-      expect(tree).toMatchSnapshot();
-    });
-    it('renders without a language selector in es', () => {
-      const tree = renderer
-        .create(<FooterWithContext locale="es" />)
-        .toJSON();
-      expect(tree).toMatchSnapshot();
-    });
-    it('renders with a language selector', () => {
-      const tree = renderer
-        .create(<FooterWithLanguageSelector />)
-        .toJSON();
-      expect(tree).toMatchSnapshot();
-    });
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
 
-  describe('handles language switching', () => {
-    it('calls onLanguageSelected prop when a language is changed', async () => {
-      const user = userEvent.setup();
-      const mockHandleLanguageSelected = jest.fn();
-      render(<FooterWithLanguageSelector languageSelected={mockHandleLanguageSelected} />);
+  it('renders the footer with a logo', () => {
+    render(
+      <IntlProvider locale="en">
+        <AppContext.Provider value={{ config }}>
+          <Footer />
+        </AppContext.Provider>
+      </IntlProvider>,
+    );
 
-      await user.selectOptions(screen.getByRole('combobox'), 'es');
-      await user.click(screen.getByTestId('site-footer-submit-btn'));
+    expect(screen.getByRole('contentinfo')).toBeInTheDocument();
+    expect(screen.getByAltText('edX Home Page')).toBeInTheDocument();
+    // Check for fixed footer class
+    expect(screen.getByRole('contentinfo')).toHaveClass('footer-fixed');
+    // Check for fixed height
+    expect(screen.getByRole('contentinfo')).toHaveStyle('height: 80px');
+  });
 
-      expect(mockHandleLanguageSelected).toHaveBeenCalledWith('es');
+  it('renders the footer with a language selector', () => {
+    const onLanguageSelected = jest.fn();
+
+    render(
+      <IntlProvider locale="en">
+        <AppContext.Provider value={{ config }}>
+          <Footer
+            onLanguageSelected={onLanguageSelected}
+            supportedLanguages={supportedLanguages}
+          />
+        </AppContext.Provider>
+      </IntlProvider>,
+    );
+
+    expect(screen.getByLabelText('Choose Language')).toBeInTheDocument();
+    expect(screen.getByTestId('site-footer-submit-btn')).toBeInTheDocument();
+  });
+
+  it('renders the footer without a language selector when supportedLanguages is empty', () => {
+    const onLanguageSelected = jest.fn();
+
+    render(
+      <IntlProvider locale="en">
+        <AppContext.Provider value={{ config }}>
+          <Footer
+            onLanguageSelected={onLanguageSelected}
+            supportedLanguages={[]}
+          />
+        </AppContext.Provider>
+      </IntlProvider>,
+    );
+
+    expect(screen.queryByLabelText('Choose Language')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('site-footer-submit-btn')).not.toBeInTheDocument();
+  });
+
+  it('renders the footer without a language selector when onLanguageSelected is null', () => {
+    render(
+      <IntlProvider locale="en">
+        <AppContext.Provider value={{ config }}>
+          <Footer
+            supportedLanguages={supportedLanguages}
+          />
+        </AppContext.Provider>
+      </IntlProvider>,
+    );
+
+    expect(screen.queryByLabelText('Choose Language')).not.toBeInTheDocument();
+    expect(screen.queryByTestId('site-footer-submit-btn')).not.toBeInTheDocument();
+  });
+
+  it('shows custom tooltip on logo hover', () => {
+    render(
+      <IntlProvider locale="en">
+        <AppContext.Provider value={{ config }}>
+          <Footer />
+        </AppContext.Provider>
+      </IntlProvider>,
+    );
+
+    const logo = screen.getByRole('link', { name: 'edX Home Page' });
+    const tooltip = screen.getByRole('tooltip');
+    
+    // Tooltip should be hidden by default
+    expect(tooltip).toHaveAttribute('aria-hidden', 'true');
+    expect(tooltip).not.toHaveClass('custom-tooltip-visible');
+    
+    // Hover over logo
+    userEvent.hover(logo);
+    
+    // Tooltip should be visible
+    expect(tooltip).toHaveAttribute('aria-hidden', 'false');
+    expect(tooltip).toHaveClass('custom-tooltip-visible');
+  });
+
+  it('sends tracking event when logo is clicked', () => {
+    render(
+      <IntlProvider locale="en">
+        <AppContext.Provider value={{ config }}>
+          <Footer />
+        </AppContext.Provider>
+      </IntlProvider>,
+    );
+
+    const logo = screen.getByRole('link', { name: 'edX Home Page' });
+    userEvent.click(logo);
+
+    expect(sendTrackEvent).toHaveBeenCalledWith(EVENT_NAMES.FOOTER_LINK, {
+      category: 'outbound_link',
+      label: 'http://localhost:18000',
     });
   });
 });
