@@ -64,7 +64,6 @@ body {
   position: relative;
   display: flex;
   align-items: center;
-  flex-wrap: nowrap; /* Prevent wrapping */
 }
 
 .logo-link {
@@ -86,10 +85,8 @@ body {
 }
 
 .logo-image {
-  max-height: 45px;
+  height: 45px;
   width: auto;
-  max-width: 100%;
-  height: auto;
 }
 
 /* Language selector area */
@@ -102,7 +99,6 @@ body {
 .footer-colophon .footer-link {
   margin-right: 24px;
   font-size: 17px;
-  white-space: nowrap; /* Prevent text wrapping */
 }
 .footer-colophon .footer-link:last-child {
   margin-right: 0;
@@ -112,8 +108,38 @@ body {
 .logo-wrapper > .footer-colophon {
   margin-left: 33px;
   display: flex;
-  flex-wrap: nowrap; /* Prevent wrapping */
   align-items: center;
+}
+
+/* App download badges on the right */
+.footer-app-downloads {
+  margin-left: 20px;
+  margin-right: -20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.footer-app-downloads .footer-app-label {
+  font-size: 17px;
+  font-weight: 500;
+  color: #212222;
+  margin-right: 6px;
+  font-family: "Open Sans", sans-serif;
+}
+
+.footer-store-badge img {
+  height: 40px;
+  width: auto;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* Hide app badges on mobile and tablet */
+@media (max-width: 768px) {
+  .footer-app-downloads {
+    display: none !important;
+  }
 }
 
 /* Responsive adjustments for footer */
@@ -129,7 +155,7 @@ body {
   .logo-wrapper > .footer-colophon {
     margin-left: 20px;
   }
-  
+
   .footer-colophon .footer-link {
     margin-right: 16px;
   }
@@ -138,23 +164,23 @@ body {
 @media (max-width: 600px) {
   /* At small screens, reduce size to prevent stacking */
   .logo-image {
-    max-height: 35px;
+    height: 35px;
   }
-  
+
   .footer-colophon {
     display: flex;
     flex-wrap: nowrap;
   }
-  
+
   .footer-colophon .footer-link {
     margin-right: 12px;
     font-size: 13px;
   }
-  
+
   .logo-wrapper > .footer-colophon {
     margin-left: 12px;
   }
-  
+
   /* Ensure everything stays on one line */
   .footer-container {
     justify-content: space-between;
@@ -162,7 +188,7 @@ body {
     -ms-overflow-style: none; /* Hide scrollbar in IE and Edge */
     scrollbar-width: none; /* Hide scrollbar in Firefox */
   }
-  
+
   .footer-container::-webkit-scrollbar {
     display: none; /* Hide scrollbar in Chrome, Safari, and Opera */
   }
@@ -171,9 +197,9 @@ body {
 @media (max-width: 480px) {
   /* At very small screens, reduce size further */
   .logo-image {
-    max-height: 30px;
+    height: 30px;
   }
-  
+
   .footer-colophon .footer-link {
     font-size: 12px;
     margin-right: 8px;

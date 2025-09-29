@@ -5,6 +5,9 @@ import { sendTrackEvent } from '@edx/frontend-platform/analytics';
 import { ensureConfig } from '@edx/frontend-platform';
 import { AppContext } from '@edx/frontend-platform/react';
 
+import googlePlayBadge from '../assets/googleplay.png';
+import appStoreBadge from '../assets/appstore.png';
+
 import messages from './Footer.messages';
 import LanguageSelector from './LanguageSelector';
 import './styles/Footer.css';
@@ -147,6 +150,26 @@ class SiteFooter extends React.Component {
           </div>
 
           <div className="flex-grow-1" />
+
+          <div className="footer-app-downloads">
+            <div className="footer-app-label">Download our app</div>
+            <a
+              className="footer-store-badge play"
+              href="https://play.google.com/store/apps/details?id=org.sherab.app"
+              aria-label="Get it on Google Play"
+              rel="noopener"
+            >
+              <img src={googlePlayBadge} alt="Get it on Google Play" loading="lazy" decoding="async" />
+            </a>
+            <a
+              className="footer-store-badge appstore"
+              href="https://apps.apple.com/us/app/sherab/id6747565399"
+              aria-label="Download on the App Store"
+              rel="noopener"
+            >
+              <img src={appStoreBadge} alt="Download on the App Store" loading="lazy" decoding="async" />
+            </a>
+          </div>
 
           {showLanguageSelector && (
             <div className="language-selector-wrapper">
