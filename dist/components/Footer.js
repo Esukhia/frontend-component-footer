@@ -17,6 +17,8 @@ import { injectIntl, intlShape } from '@edx/frontend-platform/i18n';
 import { sendTrackEvent } from '@edx/frontend-platform/analytics';
 import { ensureConfig } from '@edx/frontend-platform';
 import { AppContext } from '@edx/frontend-platform/react';
+import googlePlayBadge from '../assets/googleplay.png';
+import appStoreBadge from '../assets/appstore.png';
 import messages from './Footer.messages';
 import LanguageSelector from './LanguageSelector';
 import './styles/Footer.css';
@@ -161,7 +163,31 @@ var SiteFooter = /*#__PURE__*/function (_React$Component) {
         className: "footer-link"
       }, intl.formatMessage(messages['footer.colophon.privacy'])))), /*#__PURE__*/React.createElement("div", {
         className: "flex-grow-1"
-      }), showLanguageSelector && /*#__PURE__*/React.createElement("div", {
+      }), /*#__PURE__*/React.createElement("div", {
+        className: "footer-app-downloads"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "footer-app-label"
+      }, "Download our app"), /*#__PURE__*/React.createElement("a", {
+        className: "footer-store-badge play",
+        href: "https://play.google.com/store/apps/details?id=org.sherab.app",
+        "aria-label": "Get it on Google Play",
+        rel: "noopener"
+      }, /*#__PURE__*/React.createElement("img", {
+        src: googlePlayBadge,
+        alt: "Get it on Google Play",
+        loading: "lazy",
+        decoding: "async"
+      })), /*#__PURE__*/React.createElement("a", {
+        className: "footer-store-badge appstore",
+        href: "https://apps.apple.com/us/app/sherab/id6747565399",
+        "aria-label": "Download on the App Store",
+        rel: "noopener"
+      }, /*#__PURE__*/React.createElement("img", {
+        src: appStoreBadge,
+        alt: "Download on the App Store",
+        loading: "lazy",
+        decoding: "async"
+      }))), showLanguageSelector && /*#__PURE__*/React.createElement("div", {
         className: "language-selector-wrapper"
       }, /*#__PURE__*/React.createElement(LanguageSelector, {
         options: supportedLanguages,
