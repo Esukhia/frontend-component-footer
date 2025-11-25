@@ -171,6 +171,16 @@ const messages = defineMessages({
     defaultMessage: 'Privacy Policy',
     description: 'Footer link to Privacy Policy page',
   },
+  'footer.becomeCourseProvider': {
+    id: 'footer.becomeCourseProvider',
+    defaultMessage: 'Become a course provider',
+    description: 'Link to become a course provider',
+  },
+  'footer.copyright': {
+    id: 'footer.copyright',
+    defaultMessage: '© 2025 Sherab.',
+    description: 'Copyright text',
+  },
 });
 
 export default messages;

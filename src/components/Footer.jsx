@@ -10,6 +10,13 @@ import appStoreBadge from '../assets/appstore.png';
 
 import messages from './Footer.messages';
 import LanguageSelector from './LanguageSelector';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faFacebook,
+  faInstagram,
+  faXTwitter,
+  faYoutube,
+} from '@fortawesome/free-brands-svg-icons';
 import './styles/Footer.css';
 
 ensureConfig([
@@ -59,7 +66,6 @@ class SiteFooter extends React.Component {
 
     // Add padding to the calculation to account for the footer height
     // This prevents the stuttering effect when scrolling slowly
-    const footerHeight = 80; // Same as in CSS
     // Using a smaller threshold when footer is visible to make it hide quicker when scrolling up
     const bottomThreshold = this.state.isAtBottom ? 30 : 20;
 
@@ -93,82 +99,114 @@ class SiteFooter extends React.Component {
     const showLanguageSelector = supportedLanguages.length > 0 && onLanguageSelected;
     const { config } = this.context;
 
+    const studioUrl = config.STUDIO_BASE_URL
+      || config.STUDIO_URL
+      || (config.LMS_BASE_URL ? `https://studio.${new URL(config.LMS_BASE_URL).host}` : undefined);
+
     const footerVisibleClass = isAtBottom && !isInitialLoad ? 'footer-visible' : '';
 
     return (
       <footer
         role="contentinfo"
-        className={`footer-fixed py-0 px-4 ${footerVisibleClass}`}
+        className={`footer-fixed px-4 ${footerVisibleClass}`}
         aria-label="Site footer"
       >
         <div className="container-fluid footer-container">
-          <div className="logo-wrapper">
+          <div className="footer-top">
+            <div className="logo-wrapper">
+              <a
+                className={`logo-link ${isLogoHovered ? 'logo-link-hover' : ''}`}
+                href={config.LMS_BASE_URL}
+                aria-label={intl.formatMessage(messages['footer.logo.ariaLabel'])}
+                onMouseEnter={() => this.setState({ isLogoHovered: true })}
+                onMouseLeave={() => this.setState({ isLogoHovered: false })}
+              >
+                <img
+                  className="logo-image"
+                  src={logo || config.LOGO_TRADEMARK_URL}
+                  alt={intl.formatMessage(messages['footer.logo.altText'])}
+                />
+                <div
+                  className={`custom-tooltip ${isLogoHovered ? 'custom-tooltip-visible' : ''}`}
+                  role="tooltip"
+                  aria-hidden={!isLogoHovered}
+                >
+                  {intl.formatMessage(messages['footer.logo.hoverText'])}
+                </div>
+              </a>
+              <nav className="footer-colophon">
+                <a
+                  href={`${config.LMS_BASE_URL}/about`}
+                  onClick={this.externalLinkClickHandler}
+                  className="footer-link"
+                >
+                  {intl.formatMessage(messages['footer.colophon.about'])}
+                </a>
+                <a
+                  href={`${config.LMS_BASE_URL}/contact`}
+                  onClick={this.externalLinkClickHandler}
+                  className="footer-link"
+                >
+                  {intl.formatMessage(messages['footer.colophon.contact'])}
+                </a>
+                <a
+                  href={`${config.LMS_BASE_URL}/privacy`}
+                  onClick={this.externalLinkClickHandler}
+                  className="footer-link"
+                >
+                  {intl.formatMessage(messages['footer.colophon.privacy'])}
+                </a>
+              </nav>
+            </div>
 
-            <a
-              className={`logo-link ${isLogoHovered ? 'logo-link-hover' : ''}`}
-              href={config.LMS_BASE_URL}
-              aria-label={intl.formatMessage(messages['footer.logo.ariaLabel'])}
-              onMouseEnter={() => this.setState({ isLogoHovered: true })}
-              onMouseLeave={() => this.setState({ isLogoHovered: false })}
-            >
-              <img
-                className="logo-image"
-                src={logo || config.LOGO_TRADEMARK_URL}
-                alt={intl.formatMessage(messages['footer.logo.altText'])}
-              />
-              <div
-                className={`custom-tooltip ${isLogoHovered ? 'custom-tooltip-visible' : ''}`}
-                role="tooltip"
-                aria-hidden={!isLogoHovered}
-              >
-                {intl.formatMessage(messages['footer.logo.hoverText'])}
+            <div className="footer-app-downloads">
+              <div className="footer-app-label">DOWNLOAD OUR APP</div>
+              <div className="footer-badges">
+                <a
+                  className="footer-store-badge play"
+                  href="https://play.google.com/store/apps/details?id=org.sherab.app"
+                  aria-label="Get it on Google Play"
+                  rel="noopener"
+                >
+                  <img src={googlePlayBadge} alt="Get it on Google Play" loading="lazy" decoding="async" />
+                </a>
+                <a
+                  className="footer-store-badge appstore"
+                  href="https://apps.apple.com/us/app/sherab/id6747565399"
+                  aria-label="Download on the App Store"
+                  rel="noopener"
+                >
+                  <img src={appStoreBadge} alt="Download on the App Store" loading="lazy" decoding="async" />
+                </a>
               </div>
-            </a>
-            <nav className="footer-colophon">
-              <a
-                href={`${config.LMS_BASE_URL}/about`}
-                onClick={this.externalLinkClickHandler}
-                className="footer-link"
-              >
-                {intl.formatMessage(messages['footer.colophon.about'])}
-              </a>
-              <a
-                href={`${config.LMS_BASE_URL}/contact`}
-                onClick={this.externalLinkClickHandler}
-                className="footer-link"
-              >
-                {intl.formatMessage(messages['footer.colophon.contact'])}
-              </a>
-              <a
-                href={`${config.LMS_BASE_URL}/privacy`}
-                onClick={this.externalLinkClickHandler}
-                className="footer-link"
-              >
-                {intl.formatMessage(messages['footer.colophon.privacy'])}
-              </a>
-            </nav>
+            </div>
           </div>
 
-          <div className="flex-grow-1" />
+          <div className="footer-bottom">
+            <div className="footer-provider-link">
+              <a href={studioUrl || `${config.LMS_BASE_URL}/course-provider`}>
+                {intl.formatMessage(messages['footer.becomeCourseProvider'])} &gt;
+              </a>
+            </div>
 
-          <div className="footer-app-downloads">
-            <div className="footer-app-label">Download our app</div>
-            <a
-              className="footer-store-badge play"
-              href="https://play.google.com/store/apps/details?id=org.sherab.app"
-              aria-label="Get it on Google Play"
-              rel="noopener"
-            >
-              <img src={googlePlayBadge} alt="Get it on Google Play" loading="lazy" decoding="async" />
-            </a>
-            <a
-              className="footer-store-badge appstore"
-              href="https://apps.apple.com/us/app/sherab/id6747565399"
-              aria-label="Download on the App Store"
-              rel="noopener"
-            >
-              <img src={appStoreBadge} alt="Download on the App Store" loading="lazy" decoding="async" />
-            </a>
+            <div className="footer-copyright">
+              {intl.formatMessage(messages['footer.copyright'])}
+            </div>
+
+            <div className="footer-social-icons">
+              <a href="https://www.facebook.com/profile.php?id=61580184195837" className="social-icon" aria-label="Facebook">
+                <FontAwesomeIcon icon={faFacebook} />
+              </a>
+              <a href="https://www.instagram.com/sherab.elearning/" className="social-icon" aria-label="Instagram">
+                <FontAwesomeIcon icon={faInstagram} />
+              </a>
+              <a href="https://x.com/Sherab_edu" className="social-icon" aria-label="X">
+                <FontAwesomeIcon icon={faXTwitter} />
+              </a>
+              <a href="https://www.youtube.com/@SherabLMS" className="social-icon" aria-label="YouTube">
+                <FontAwesomeIcon icon={faYoutube} />
+              </a>
+            </div>
           </div>
 
           {showLanguageSelector && (

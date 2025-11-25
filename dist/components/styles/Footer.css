@@ -1,6 +1,7 @@
 /* Footer styles */
 body {
-  padding-bottom: 100px; /* reserve space for the footer */
+  padding-bottom: 100px;
+  /* reserve space for the footer */
 }
 
 .footer-fixed {
@@ -8,7 +9,8 @@ body {
   bottom: 0;
   left: 0;
   right: 0;
-  height: 75px; /* Fixed heigh */
+  height: 75px;
+  /* Fixed heigh */
   background-color: #fff;
   border-top: 1px solid #e7e7e7;
   z-index: 1000;
@@ -75,6 +77,7 @@ body {
 .logo-link:focus {
   outline: none;
 }
+
 .logo-link:focus-visible {
   outline: 2px solid #0075b4;
   outline-offset: 2px;
@@ -100,12 +103,13 @@ body {
   margin-right: 24px;
   font-size: 17px;
 }
+
 .footer-colophon .footer-link:last-child {
   margin-right: 0;
 }
 
 /* spacing between logo and colophon */
-.logo-wrapper > .footer-colophon {
+.logo-wrapper>.footer-colophon {
   margin-left: 33px;
   display: flex;
   align-items: center;
@@ -144,6 +148,7 @@ body {
 
 /* Responsive adjustments for footer */
 @media (max-width: 992px) {
+
   /* Only adjust spacing at this breakpoint */
   .footer-container {
     padding: 0 10px;
@@ -151,8 +156,9 @@ body {
 }
 
 @media (max-width: 768px) {
+
   /* Reduce margins between elements */
-  .logo-wrapper > .footer-colophon {
+  .logo-wrapper>.footer-colophon {
     margin-left: 20px;
   }
 
@@ -162,6 +168,7 @@ body {
 }
 
 @media (max-width: 600px) {
+
   /* At small screens, reduce size to prevent stacking */
   .logo-image {
     height: 35px;
@@ -177,24 +184,29 @@ body {
     font-size: 13px;
   }
 
-  .logo-wrapper > .footer-colophon {
+  .logo-wrapper>.footer-colophon {
     margin-left: 12px;
   }
 
   /* Ensure everything stays on one line */
   .footer-container {
     justify-content: space-between;
-    overflow-x: auto; /* Allow horizontal scrolling if needed */
-    -ms-overflow-style: none; /* Hide scrollbar in IE and Edge */
-    scrollbar-width: none; /* Hide scrollbar in Firefox */
+    overflow-x: auto;
+    /* Allow horizontal scrolling if needed */
+    -ms-overflow-style: none;
+    /* Hide scrollbar in IE and Edge */
+    scrollbar-width: none;
+    /* Hide scrollbar in Firefox */
   }
 
   .footer-container::-webkit-scrollbar {
-    display: none; /* Hide scrollbar in Chrome, Safari, and Opera */
+    display: none;
+    /* Hide scrollbar in Chrome, Safari, and Opera */
   }
 }
 
 @media (max-width: 480px) {
+
   /* At very small screens, reduce size further */
   .logo-image {
     height: 30px;
