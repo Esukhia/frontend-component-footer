@@ -1,5 +1,5 @@
 import { defineMessages } from '@edx/frontend-platform/i18n';
-var messages = defineMessages({
+const messages = defineMessages({
   'footer.socialLinks.srText.facebook': {
     id: 'footer.socialLinks.srText.facebook',
     defaultMessage: 'Like edX on Facebook',
@@ -169,6 +169,16 @@ var messages = defineMessages({
     id: 'footer.colophon.privacy',
     defaultMessage: 'Privacy Policy',
     description: 'Footer link to Privacy Policy page'
+  },
+  'footer.becomeCourseProvider': {
+    id: 'footer.becomeCourseProvider',
+    defaultMessage: 'Become a course provider',
+    description: 'Link to become a course provider'
+  },
+  'footer.copyright': {
+    id: 'footer.copyright',
+    defaultMessage: '© 2025 Sherab.',
+    description: 'Copyright text'
   }
 });
 export default messages;
