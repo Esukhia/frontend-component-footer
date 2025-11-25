@@ -19,7 +19,7 @@ body {
   transform: translateY(100%);
   visibility: hidden;
   transition: transform 0.2s ease-out, visibility 0.2s ease-out;
-  padding: 15px 0 70px 0 !important;
+  padding: 13px 0 65px 0 !important;
 }
 
 /* Show footer when at bottom of page */
