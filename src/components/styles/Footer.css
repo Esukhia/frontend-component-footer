@@ -253,7 +253,7 @@ body {
   }
 
   .logo-wrapper>.footer-colophon {
-    margin-left: 0;
+    margin-left: 15px;
     margin-top: 12px;
     flex-wrap: wrap;
     gap: 12px;
@@ -262,6 +262,13 @@ body {
   .footer-colophon .footer-link {
     margin-right: 16px;
     font-size: 18px;
+    position: relative;
+    top: -1px;
+  }
+
+  .footer-social-icons {
+    margin-right: 0;
+    justify-content: center;
   }
 
   .footer-bottom {
@@ -279,5 +286,30 @@ body {
 
   .footer-colophon .footer-link {
     font-size: 16px;
+  }
+}
+
+@media (max-width: 425px) {
+  .logo-image {
+    height: 30px;
+  }
+
+  .footer-container {
+    padding: 0 10px;
+  }
+
+  .logo-wrapper>.footer-colophon {
+    flex-wrap: nowrap;
+  }
+
+  .footer-colophon .footer-link {
+    font-size: 13px;
+    margin-right: 8px;
+  }
+}
+
+@media (max-width: 320px) {
+  .footer-colophon .footer-link {
+    font-size: 12px;
   }
 }
