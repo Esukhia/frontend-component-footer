@@ -1,7 +1,8 @@
 /* Footer styles */
 body {
-  padding-bottom: 350px !important;
+  /*padding-bottom: 350px !important;*/
   /* reserve space for the footer */
+  /* no need */
 }
 
 .footer-fixed {

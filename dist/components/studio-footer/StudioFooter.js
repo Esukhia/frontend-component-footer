@@ -88,11 +88,8 @@ const StudioFooter = _ref => {
   }, intl.formatMessage(messages.accessibilityRequestLinkLabel)), /*#__PURE__*/React.createElement(Hyperlink, {
     destination: config.LMS_BASE_URL
   }, "LMS")), /*#__PURE__*/React.createElement(ActionRow, {
-    className: "mt-3 pb-4 x-small"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.trademarkMessage), /*#__PURE__*/React.createElement(Hyperlink, {
-    className: "ml-1",
-    destination: "https://www.edx.org"
-  }, "edX Inc"), ".", /*#__PURE__*/React.createElement(ActionRow.Spacer, null), /*#__PURE__*/React.createElement(StudioFooterLogoSlot, null))));
+    className: "mt-3 pb-4 x-small justify-content-center"
+  }, /*#__PURE__*/React.createElement(StudioFooterLogoSlot, null))));
 };
 StudioFooter.propTypes = {
   containerProps: PropTypes.shape(Container.propTypes)

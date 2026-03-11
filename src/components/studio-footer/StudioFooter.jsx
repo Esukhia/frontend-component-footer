@@ -31,6 +31,7 @@ ensureConfig([
 const StudioFooter = ({
   containerProps,
 }) => {
+
   const intl = useIntl();
   const [isOpen, setIsOpen] = useState(false);
   const { config } = useContext(AppContext);
@@ -124,16 +125,7 @@ const StudioFooter = ({
           )}
           <Hyperlink destination={config.LMS_BASE_URL}>LMS</Hyperlink>
         </ActionRow>
-        <ActionRow className="mt-3 pb-4 x-small">
-          {/*
-            Site operators: Please do not remove this paragraph! this attributes back to edX and
-              makes your acknowledgement of edX's trademarks clear.
-            Translators: 'edX' and 'Open edX' are trademarks of 'edX Inc.'. Please do not translate
-              any of these trademarks and company names.
-          */}
-          <FormattedMessage {...messages.trademarkMessage} />
-          <Hyperlink className="ml-1" destination="https://www.edx.org">edX Inc</Hyperlink>.
-          <ActionRow.Spacer />
+        <ActionRow className="mt-3 pb-4 x-small justify-content-center">
           <StudioFooterLogoSlot />
         </ActionRow>
       </Container>
