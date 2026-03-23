@@ -37,21 +37,13 @@ class SiteFooter extends React.Component {
     this.state = {
       isLogoHovered: false,
       isAtBottom: false,
-      isInitialLoad: true, // Track initial page load
+      hasScrolled: false, // Track if user has scrolled
     };
   }
 
   componentDidMount() {
     // Add scroll event listener
     window.addEventListener('scroll', this.handleScroll, { passive: true });
-
-    // Set a timeout to mark the initial load phase as complete
-    // This ensures the footer stays hidden on initial load
-    setTimeout(() => {
-      this.setState({ isInitialLoad: false });
-      // Only then check if we should show the footer
-      this.handleScroll();
-    }, 500);
   }
 
   componentWillUnmount() {
@@ -59,6 +51,11 @@ class SiteFooter extends React.Component {
   }
 
   handleScroll() {
+    // Mark that user has scrolled
+    if (!this.state.hasScrolled) {
+      this.setState({ hasScrolled: true });
+    }
+
     // Check if we're at the bottom of the page
     const windowHeight = window.innerHeight;
     const documentHeight = document.documentElement.scrollHeight;
@@ -95,7 +92,7 @@ class SiteFooter extends React.Component {
       logo,
       intl,
     } = this.props;
-    const { isLogoHovered, isAtBottom, isInitialLoad } = this.state;
+    const { isLogoHovered, isAtBottom, hasScrolled } = this.state;
     const showLanguageSelector = supportedLanguages.length > 0 && onLanguageSelected;
     const { config } = this.context;
 
@@ -103,7 +100,7 @@ class SiteFooter extends React.Component {
       || config.STUDIO_URL
       || (config.LMS_BASE_URL ? `https://studio.${new URL(config.LMS_BASE_URL).host}` : undefined);
 
-    const footerVisibleClass = isAtBottom && !isInitialLoad ? 'footer-visible' : '';
+    const footerVisibleClass = isAtBottom && hasScrolled ? 'footer-visible' : '';
 
     return (
       <footer
