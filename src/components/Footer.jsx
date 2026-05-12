@@ -187,12 +187,7 @@ class SiteFooter extends React.Component {
           </div>
 
           <div className="footer-bottom">
-            <div className="footer-provider-link">
-              <a href={studioUrl || `${config.LMS_BASE_URL}/course-provider`}>
-                {intl.formatMessage(messages['footer.becomeCourseProvider'])} &gt;
-              </a>
-            </div>
-
+            <div />
             <div className="footer-copyright">
               {intl.formatMessage(messages['footer.copyright'], { year: new Date().getFullYear() })}
             </div>
