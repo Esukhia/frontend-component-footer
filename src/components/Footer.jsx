@@ -194,7 +194,7 @@ class SiteFooter extends React.Component {
             </div>
 
             <div className="footer-copyright">
-              {intl.formatMessage(messages['footer.copyright'])}
+              {intl.formatMessage(messages['footer.copyright'], { year: new Date().getFullYear() })}
             </div>
 
             <div className="footer-social-icons">

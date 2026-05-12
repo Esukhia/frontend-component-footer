@@ -178,7 +178,7 @@ const messages = defineMessages({
   },
   'footer.copyright': {
     id: 'footer.copyright',
-    defaultMessage: '© 2025 Sherab.',
+    defaultMessage: '© {year} Sherab.',
     description: 'Copyright text',
   },
 });
