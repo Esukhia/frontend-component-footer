@@ -33,6 +33,7 @@ class SiteFooter extends React.Component {
     super(props);
     this.externalLinkClickHandler = this.externalLinkClickHandler.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
+    this.footerRef = React.createRef();
     // Start with footer hidden
     this.state = {
       isLogoHovered: false,
@@ -44,22 +45,27 @@ class SiteFooter extends React.Component {
   componentDidMount() {
     // Add scroll event listener
     window.addEventListener('scroll', this.handleScroll, { passive: true });
+    // Reserve space so the fixed footer doesn't overlap page content
+    if (this.footerRef.current) {
+      document.body.style.paddingBottom = `${this.footerRef.current.offsetHeight + 70}px`;
+    }
   }
 
   componentWillUnmount() {
     window.removeEventListener('scroll', this.handleScroll);
+    document.body.style.paddingBottom = '';
   }
 
   handleScroll() {
-    // Mark that user has scrolled
-    if (!this.state.hasScrolled) {
-      this.setState({ hasScrolled: true });
-    }
-
     // Check if we're at the bottom of the page
     const windowHeight = window.innerHeight;
     const documentHeight = document.documentElement.scrollHeight;
     const scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+    // Mark that user has scrolled only when they've actually scrolled down
+    if (!this.state.hasScrolled && scrollTop > 0) {
+      this.setState({ hasScrolled: true });
+    }
 
     // Add padding to the calculation to account for the footer height
     // This prevents the stuttering effect when scrolling slowly
@@ -104,6 +110,7 @@ class SiteFooter extends React.Component {
 
     return (
       <footer
+        ref={this.footerRef}
         role="contentinfo"
         className={`footer-fixed px-4 ${footerVisibleClass}`}
         aria-label="Site footer"
@@ -180,14 +187,9 @@ class SiteFooter extends React.Component {
           </div>
 
           <div className="footer-bottom">
-            <div className="footer-provider-link">
-              <a href={studioUrl || `${config.LMS_BASE_URL}/course-provider`}>
-                {intl.formatMessage(messages['footer.becomeCourseProvider'])} &gt;
-              </a>
-            </div>
-
+            <div />
             <div className="footer-copyright">
-              {intl.formatMessage(messages['footer.copyright'])}
+              {intl.formatMessage(messages['footer.copyright'], { year: new Date().getFullYear() })}
             </div>
 
             <div className="footer-social-icons">

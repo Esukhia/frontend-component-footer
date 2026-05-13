@@ -20,11 +20,12 @@ class SiteFooter extends React.Component {
     super(props);
     this.externalLinkClickHandler = this.externalLinkClickHandler.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
+    this.footerRef = /*#__PURE__*/React.createRef();
     // Start with footer hidden
     this.state = {
       isLogoHovered: false,
       isAtBottom: false,
-      isInitialLoad: true // Track initial page load
+      hasScrolled: false // Track if user has scrolled
     };
   }
   componentDidMount() {
@@ -32,25 +33,27 @@ class SiteFooter extends React.Component {
     window.addEventListener('scroll', this.handleScroll, {
       passive: true
     });
-
-    // Set a timeout to mark the initial load phase as complete
-    // This ensures the footer stays hidden on initial load
-    setTimeout(() => {
-      this.setState({
-        isInitialLoad: false
-      });
-      // Only then check if we should show the footer
-      this.handleScroll();
-    }, 500);
+    // Reserve space so the fixed footer doesn't overlap page content
+    if (this.footerRef.current) {
+      document.body.style.paddingBottom = `${this.footerRef.current.offsetHeight + 70}px`;
+    }
   }
   componentWillUnmount() {
     window.removeEventListener('scroll', this.handleScroll);
+    document.body.style.paddingBottom = '';
   }
   handleScroll() {
     // Check if we're at the bottom of the page
     const windowHeight = window.innerHeight;
     const documentHeight = document.documentElement.scrollHeight;
     const scrollTop = window.scrollY || document.documentElement.scrollTop;
+
+    // Mark that user has scrolled only when they've actually scrolled down
+    if (!this.state.hasScrolled && scrollTop > 0) {
+      this.setState({
+        hasScrolled: true
+      });
+    }
 
     // Add padding to the calculation to account for the footer height
     // This prevents the stuttering effect when scrolling slowly
@@ -86,15 +89,16 @@ class SiteFooter extends React.Component {
     const {
       isLogoHovered,
       isAtBottom,
-      isInitialLoad
+      hasScrolled
     } = this.state;
     const showLanguageSelector = supportedLanguages.length > 0 && onLanguageSelected;
     const {
       config
     } = this.context;
     const studioUrl = config.STUDIO_BASE_URL || config.STUDIO_URL || (config.LMS_BASE_URL ? `https://studio.${new URL(config.LMS_BASE_URL).host}` : undefined);
-    const footerVisibleClass = isAtBottom && !isInitialLoad ? 'footer-visible' : '';
+    const footerVisibleClass = isAtBottom && hasScrolled ? 'footer-visible' : '';
     return /*#__PURE__*/React.createElement("footer", {
+      ref: this.footerRef,
       role: "contentinfo",
       className: `footer-fixed px-4 ${footerVisibleClass}`,
       "aria-label": "Site footer"
@@ -164,13 +168,11 @@ class SiteFooter extends React.Component {
       decoding: "async"
     }))))), /*#__PURE__*/React.createElement("div", {
       className: "footer-bottom"
-    }, /*#__PURE__*/React.createElement("div", {
-      className: "footer-provider-link"
-    }, /*#__PURE__*/React.createElement("a", {
-      href: studioUrl || `${config.LMS_BASE_URL}/course-provider`
-    }, intl.formatMessage(messages['footer.becomeCourseProvider']), " >")), /*#__PURE__*/React.createElement("div", {
+    }, /*#__PURE__*/React.createElement("div", null), /*#__PURE__*/React.createElement("div", {
       className: "footer-copyright"
-    }, intl.formatMessage(messages['footer.copyright'])), /*#__PURE__*/React.createElement("div", {
+    }, intl.formatMessage(messages['footer.copyright'], {
+      year: new Date().getFullYear()
+    })), /*#__PURE__*/React.createElement("div", {
       className: "footer-social-icons"
     }, /*#__PURE__*/React.createElement("a", {
       href: "https://www.facebook.com/profile.php?id=61580184195837",
