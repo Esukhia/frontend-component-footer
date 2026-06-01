@@ -75,20 +75,6 @@ const StudioFooter = ({
               >
                 <FormattedMessage {...messages.openEdxPortalButtonLabel} />
               </Button>
-              <Button
-                as="a"
-                href="https://www.edx.org/course/edx101-overview-of-creating-an-edx-course#.VO4eaLPF-n1"
-                size="sm"
-              >
-                <FormattedMessage {...messages.edx101ButtonLabel} />
-              </Button>
-              <Button
-                as="a"
-                href="https://www.edx.org/course/studiox-creating-a-course-with-edx-studio"
-                size="sm"
-              >
-                <FormattedMessage {...messages.studioXButtonLabel} />
-              </Button>
               {!isEmpty(config.SUPPORT_EMAIL) && (
                 <Button
                   as="a"
