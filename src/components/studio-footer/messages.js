@@ -21,16 +21,6 @@ const messages = defineMessages({
     defaultMessage: 'Open edX portal',
     description: 'Label for button that links to the Open edX portal',
   },
-  edx101ButtonLabel: {
-    id: 'authoring.footer.help.edx101.button.label',
-    defaultMessage: 'Enroll in edX 101',
-    description: 'Label for button that links to the edX 101 course',
-  },
-  studioXButtonLabel: {
-    id: 'authoring.footer.help.studioX.button.label',
-    defaultMessage: 'Enroll in StudioX',
-    description: 'Label for button that links to the edX StudioX course',
-  },
   contactUsButtonLabel: {
     id: 'authoring.footer.help.contactUs.button.label',
     defaultMessage: 'Contact us',

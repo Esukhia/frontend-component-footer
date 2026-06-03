@@ -57,15 +57,7 @@ const StudioFooter = _ref => {
     href: "https://openedx.org/",
     size: "sm",
     "data-testid": "openEdXPortalButton"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.openEdxPortalButtonLabel)), /*#__PURE__*/React.createElement(Button, {
-    as: "a",
-    href: "https://www.edx.org/course/edx101-overview-of-creating-an-edx-course#.VO4eaLPF-n1",
-    size: "sm"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.edx101ButtonLabel)), /*#__PURE__*/React.createElement(Button, {
-    as: "a",
-    href: "https://www.edx.org/course/studiox-creating-a-course-with-edx-studio",
-    size: "sm"
-  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.studioXButtonLabel)), !isEmpty(config.SUPPORT_EMAIL) && /*#__PURE__*/React.createElement(Button, {
+  }, /*#__PURE__*/React.createElement(FormattedMessage, messages.openEdxPortalButtonLabel)), !isEmpty(config.SUPPORT_EMAIL) && /*#__PURE__*/React.createElement(Button, {
     as: "a",
     href: `mailto:${config.SUPPORT_EMAIL}`,
     size: "sm",
