@@ -177,7 +177,7 @@ const messages = defineMessages({
   },
   'footer.copyright': {
     id: 'footer.copyright',
-    defaultMessage: '© {year} Sherab.',
+    defaultMessage: '© {year} WeBuddhist Academy.',
     description: 'Copyright text'
   }
 });
