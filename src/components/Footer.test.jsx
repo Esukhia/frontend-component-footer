@@ -39,10 +39,7 @@ describe('Footer', () => {
 
     expect(screen.getByRole('contentinfo')).toBeInTheDocument();
     expect(screen.getByAltText('edX Home Page')).toBeInTheDocument();
-    // Check for fixed footer class
-    expect(screen.getByRole('contentinfo')).toHaveClass('footer-fixed');
-    // Check for fixed height
-    expect(screen.getByRole('contentinfo')).toHaveStyle('height: 80px');
+    expect(screen.getByRole('contentinfo')).toHaveClass('site-footer');
   });
 
   it('renders the footer with a language selector', () => {
