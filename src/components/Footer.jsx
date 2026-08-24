@@ -5,80 +5,103 @@ import { sendTrackEvent } from '@edx/frontend-platform/analytics';
 import { ensureConfig } from '@edx/frontend-platform';
 import { AppContext } from '@edx/frontend-platform/react';
 
-import googlePlayBadge from '../assets/googleplay.png';
-import appStoreBadge from '../assets/appstore.png';
-
 import messages from './Footer.messages';
 import LanguageSelector from './LanguageSelector';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
+  faApple,
   faFacebook,
+  faGooglePlay,
   faInstagram,
   faXTwitter,
   faYoutube,
 } from '@fortawesome/free-brands-svg-icons';
-import './styles/Footer.css';
 
 ensureConfig([
   'LMS_BASE_URL',
   'LOGO_TRADEMARK_URL',
+  'SITE_NAME',
 ], 'Footer component');
 
 const EVENT_NAMES = {
   FOOTER_LINK: 'edx.bi.footer.link',
 };
 
+// Placeholder until final destination URLs are provided.
+const PLACEHOLDER_URL = '#';
+const GOOGLE_PLAY_URL = 'https://play.google.com/store/apps/details?id=org.sherab.app';
+const APP_STORE_URL = 'https://apps.apple.com/us/app/sherab/id6747565399';
+
 class SiteFooter extends React.Component {
   constructor(props) {
     super(props);
     this.externalLinkClickHandler = this.externalLinkClickHandler.bind(this);
-    this.handleScroll = this.handleScroll.bind(this);
-    this.footerRef = React.createRef();
-    // Start with footer hidden
+    this.handleNarrowChange = this.handleNarrowChange.bind(this);
+    this.narrowQuery = null;
     this.state = {
       isLogoHovered: false,
-      isAtBottom: false,
-      hasScrolled: false, // Track if user has scrolled
+      isNarrow: false, // Below the mobile breakpoint the link columns collapse
+      openColumns: {}, // Which columns are expanded while narrow
     };
   }
 
   componentDidMount() {
-    // Add scroll event listener
-    window.addEventListener('scroll', this.handleScroll, { passive: true });
-    // Reserve space so the fixed footer doesn't overlap page content
-    if (this.footerRef.current) {
-      document.body.style.paddingBottom = `${this.footerRef.current.offsetHeight + 70}px`;
+    // Track the mobile breakpoint so link columns can act as accordions.
+    if (typeof window !== 'undefined' && window.matchMedia) {
+      this.narrowQuery = window.matchMedia('(max-width: 600px)');
+      this.setState({ isNarrow: this.narrowQuery.matches });
+      this.narrowQuery.addEventListener('change', this.handleNarrowChange);
     }
   }
 
   componentWillUnmount() {
-    window.removeEventListener('scroll', this.handleScroll);
-    document.body.style.paddingBottom = '';
+    if (this.narrowQuery) {
+      this.narrowQuery.removeEventListener('change', this.handleNarrowChange);
+    }
   }
 
-  handleScroll() {
-    // Check if we're at the bottom of the page
-    const windowHeight = window.innerHeight;
-    const documentHeight = document.documentElement.scrollHeight;
-    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+  handleNarrowChange(event) {
+    this.setState({ isNarrow: event.matches });
+  }
 
-    // Mark that user has scrolled only when they've actually scrolled down
-    if (!this.state.hasScrolled && scrollTop > 0) {
-      this.setState({ hasScrolled: true });
-    }
+  isColumnOpen(columnId) {
+    // Above the breakpoint every column is always open.
+    return !this.state.isNarrow || !!this.state.openColumns[columnId];
+  }
 
-    // Add padding to the calculation to account for the footer height
-    // This prevents the stuttering effect when scrolling slowly
-    // Using a smaller threshold when footer is visible to make it hide quicker when scrolling up
-    const bottomThreshold = this.state.isAtBottom ? 30 : 20;
+  toggleColumn(columnId) {
+    if (!this.state.isNarrow) { return; }
+    this.setState((prev) => ({
+      openColumns: { ...prev.openColumns, [columnId]: !prev.openColumns[columnId] },
+    }));
+  }
 
-    // Consider "at bottom" when within threshold of the bottom
-    const isAtBottom = (windowHeight + scrollTop) >= (documentHeight - bottomThreshold);
-
-    // Only update if the state has changed
-    if (isAtBottom !== this.state.isAtBottom) {
-      this.setState({ isAtBottom });
-    }
+  renderColumnTitle(columnId, messageKey) {
+    const { intl } = this.props;
+    const open = this.isColumnOpen(columnId);
+    return (
+      <button
+        type="button"
+        className="ft-col-title"
+        aria-expanded={open}
+        aria-controls={`ft-col-${columnId}`}
+        onClick={() => this.toggleColumn(columnId)}
+      >
+        {intl.formatMessage(messages[messageKey])}
+        <svg
+          className="ft-col-chev"
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          aria-hidden="true"
+        >
+          <polyline points="6 9 12 15 18 9" />
+        </svg>
+      </button>
+    );
   }
 
   externalLinkClickHandler(event) {
@@ -98,26 +121,19 @@ class SiteFooter extends React.Component {
       logo,
       intl,
     } = this.props;
-    const { isLogoHovered, isAtBottom, hasScrolled } = this.state;
+    const { isLogoHovered } = this.state;
     const showLanguageSelector = supportedLanguages.length > 0 && onLanguageSelected;
     const { config } = this.context;
 
-    const studioUrl = config.STUDIO_BASE_URL
-      || config.STUDIO_URL
-      || (config.LMS_BASE_URL ? `https://studio.${new URL(config.LMS_BASE_URL).host}` : undefined);
-
-    const footerVisibleClass = isAtBottom && hasScrolled ? 'footer-visible' : '';
-
     return (
       <footer
-        ref={this.footerRef}
         role="contentinfo"
-        className={`footer-fixed px-4 ${footerVisibleClass}`}
+        className="site-footer"
         aria-label="Site footer"
       >
-        <div className="container-fluid footer-container">
-          <div className="footer-top">
-            <div className="logo-wrapper">
+        <div className="footer-container">
+          <div className="ft-grid">
+            <div className="ft-brand">
               <a
                 className={`logo-link ${isLogoHovered ? 'logo-link-hover' : ''}`}
                 href={config.LMS_BASE_URL}
@@ -130,6 +146,9 @@ class SiteFooter extends React.Component {
                   src={logo || config.LOGO_TRADEMARK_URL}
                   alt={intl.formatMessage(messages['footer.logo.altText'])}
                 />
+                <span className="ft-brand-name">
+                  {config.SITE_NAME}
+                </span>
                 <div
                   className={`custom-tooltip ${isLogoHovered ? 'custom-tooltip-visible' : ''}`}
                   role="tooltip"
@@ -138,7 +157,14 @@ class SiteFooter extends React.Component {
                   {intl.formatMessage(messages['footer.logo.hoverText'])}
                 </div>
               </a>
-              <nav className="footer-colophon">
+              <p className="ft-tagline">
+                {intl.formatMessage(messages['footer.brand.tagline'])}
+              </p>
+            </div>
+
+            <div className={`ft-col ${this.isColumnOpen('company') ? 'is-open' : ''}`}>
+              {this.renderColumnTitle('company', 'footer.column.company')}
+              <nav className="ft-col-body" id="ft-col-company">
                 <a
                   href={`${config.LMS_BASE_URL}/about`}
                   onClick={this.externalLinkClickHandler}
@@ -163,33 +189,60 @@ class SiteFooter extends React.Component {
               </nav>
             </div>
 
-            <div className="footer-app-downloads">
-              <div className="footer-app-label">DOWNLOAD OUR APP</div>
-              <div className="footer-badges">
+            <div className={`ft-col ${this.isColumnOpen('learn') ? 'is-open' : ''}`}>
+              {this.renderColumnTitle('learn', 'footer.column.learn')}
+              <nav className="ft-col-body" id="ft-col-learn">
                 <a
-                  className="footer-store-badge play"
-                  href="https://play.google.com/store/apps/details?id=org.sherab.app"
-                  aria-label="Get it on Google Play"
-                  rel="noopener"
+                  href={`${config.LMS_BASE_URL}/courses`}
+                  onClick={this.externalLinkClickHandler}
+                  className="footer-link"
                 >
-                  <img src={googlePlayBadge} alt="Get it on Google Play" loading="lazy" decoding="async" />
+  {intl.formatMessage(messages['footer.learn.exploreCourses'])}
+</a>
+                <a href={"/catalog/#partner-carousel-title"} className="footer-link">
+                  {intl.formatMessage(messages['footer.learn.schoolsPartners'])}
                 </a>
-                <a
-                  className="footer-store-badge appstore"
-                  href="https://apps.apple.com/us/app/sherab/id6747565399"
-                  aria-label="Download on the App Store"
-                  rel="noopener"
-                >
-                  <img src={appStoreBadge} alt="Download on the App Store" loading="lazy" decoding="async" />
+                <a href={PLACEHOLDER_URL} className="footer-link">
+                  {intl.formatMessage(messages['footer.learn.becomePartner'])}
+                </a>
+              </nav>
+            </div>
+
+            <div className={`ft-col ft-col-app ${this.isColumnOpen('app') ? 'is-open' : ''}`}>
+              {this.renderColumnTitle('app', 'footer.column.app')}
+              <div className="ft-col-body footer-badges" id="ft-col-app">
+                <a className="ft-store" href={GOOGLE_PLAY_URL} rel="noopener">
+                  <FontAwesomeIcon icon={faGooglePlay} className="ft-store-icon" />
+                  <span className="ft-store-text">
+                    <span className="ft-store-prefix">
+                      {intl.formatMessage(messages['footer.app.googlePlay.prefix'])}
+                    </span>
+                    <span className="ft-store-name">
+                      {intl.formatMessage(messages['footer.app.googlePlay.name'])}
+                    </span>
+                  </span>
+                </a>
+                <a className="ft-store" href={APP_STORE_URL} rel="noopener">
+                  <FontAwesomeIcon icon={faApple} className="ft-store-icon" />
+                  <span className="ft-store-text">
+                    <span className="ft-store-prefix">
+                      {intl.formatMessage(messages['footer.app.appStore.prefix'])}
+                    </span>
+                    <span className="ft-store-name">
+                      {intl.formatMessage(messages['footer.app.appStore.name'])}
+                    </span>
+                  </span>
                 </a>
               </div>
             </div>
           </div>
 
-          <div className="footer-bottom">
-            <div />
-            <div className="footer-copyright">
-              {intl.formatMessage(messages['footer.copyright'], { year: new Date().getFullYear() })}
+          <div className="ft-bottom">
+            <div className="ft-copy">
+              {intl.formatMessage(messages['footer.copyright'], {
+                year: new Date().getFullYear(),
+                siteName: config.SITE_NAME,
+              })}
             </div>
 
             <div className="footer-social-icons">
@@ -199,7 +252,7 @@ class SiteFooter extends React.Component {
               <a href="https://www.instagram.com/webuddhist_academy/" className="social-icon" aria-label="Instagram">
                 <FontAwesomeIcon icon={faInstagram} />
               </a>
-              <a href="https://x.com/Sherab_edu" className="social-icon" aria-label="X">
+              <a href="https://x.com/WB_Academy_" className="social-icon" aria-label="X">
                 <FontAwesomeIcon icon={faXTwitter} />
               </a>
               <a href="https://www.youtube.com/@SherabLMS" className="social-icon" aria-label="YouTube">

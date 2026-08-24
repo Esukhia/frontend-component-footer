@@ -175,10 +175,65 @@ const messages = defineMessages({
     defaultMessage: 'Become a course provider',
     description: 'Link to become a course provider'
   },
+  'footer.brand.tagline': {
+    id: 'footer.brand.tagline',
+    defaultMessage: 'A global platform for authentic Buddhist education, connecting students with qualified teachers and institutions.',
+    description: 'Short brand tagline shown in the footer brand column.'
+  },
+  'footer.column.company': {
+    id: 'footer.column.company',
+    defaultMessage: 'Company',
+    description: 'Title for the Company column of footer links.'
+  },
+  'footer.column.learn': {
+    id: 'footer.column.learn',
+    defaultMessage: 'Learn',
+    description: 'Title for the Learn column of footer links.'
+  },
+  'footer.column.app': {
+    id: 'footer.column.app',
+    defaultMessage: 'Download our app',
+    description: 'Title for the app download column of the footer.'
+  },
+  'footer.app.googlePlay.prefix': {
+    id: 'footer.app.googlePlay.prefix',
+    defaultMessage: 'Get it on',
+    description: 'Prefix label above the Google Play store name in the footer store button.'
+  },
+  'footer.app.googlePlay.name': {
+    id: 'footer.app.googlePlay.name',
+    defaultMessage: 'Google Play',
+    description: 'Google Play store name in the footer store button.'
+  },
+  'footer.app.appStore.prefix': {
+    id: 'footer.app.appStore.prefix',
+    defaultMessage: 'Download on the',
+    description: 'Prefix label above the App Store name in the footer store button.'
+  },
+  'footer.app.appStore.name': {
+    id: 'footer.app.appStore.name',
+    defaultMessage: 'App Store',
+    description: 'App Store name in the footer store button.'
+  },
+  'footer.learn.exploreCourses': {
+    id: 'footer.learn.exploreCourses',
+    defaultMessage: 'Explore Courses',
+    description: 'Footer link to the explore courses page.'
+  },
+  'footer.learn.schoolsPartners': {
+    id: 'footer.learn.schoolsPartners',
+    defaultMessage: 'Schools & Partners',
+    description: 'Footer link to the schools and partners page.'
+  },
+  'footer.learn.becomePartner': {
+    id: 'footer.learn.becomePartner',
+    defaultMessage: 'Become a Course Partner',
+    description: 'Footer link to become a course partner.'
+  },
   'footer.copyright': {
     id: 'footer.copyright',
-    defaultMessage: '© {year} WeBuddhist Academy.',
-    description: 'Copyright text'
+    defaultMessage: '© {year} {siteName}. All rights reserved.',
+    description: 'Copyright text. siteName is MFE SITE_NAME (Tutor PLATFORM_NAME).'
   }
 });
 export default messages;
