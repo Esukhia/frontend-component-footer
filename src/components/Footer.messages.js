@@ -176,11 +176,6 @@ const messages = defineMessages({
     defaultMessage: 'Become a course provider',
     description: 'Link to become a course provider',
   },
-  'footer.brand.name': {
-    id: 'footer.brand.name',
-    defaultMessage: 'WeBuddhist Academy',
-    description: 'Brand name shown next to the footer logo.',
-  },
   'footer.brand.tagline': {
     id: 'footer.brand.tagline',
     defaultMessage: 'A global platform for authentic Buddhist education, connecting students with qualified teachers and institutions.',
@@ -238,8 +233,8 @@ const messages = defineMessages({
   },
   'footer.copyright': {
     id: 'footer.copyright',
-    defaultMessage: '© {year} WeBuddhist Academy. All rights reserved.',
-    description: 'Copyright text',
+    defaultMessage: '© {year} {siteName}. All rights reserved.',
+    description: 'Copyright text.',
   },
 });
 

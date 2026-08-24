@@ -20,6 +20,7 @@ import {
 ensureConfig([
   'LMS_BASE_URL',
   'LOGO_TRADEMARK_URL',
+  'SITE_NAME',
 ], 'Footer component');
 
 const EVENT_NAMES = {
@@ -146,7 +147,7 @@ class SiteFooter extends React.Component {
                   alt={intl.formatMessage(messages['footer.logo.altText'])}
                 />
                 <span className="ft-brand-name">
-                  {intl.formatMessage(messages['footer.brand.name'])}
+                  {config.SITE_NAME}
                 </span>
                 <div
                   className={`custom-tooltip ${isLogoHovered ? 'custom-tooltip-visible' : ''}`}
@@ -238,7 +239,10 @@ class SiteFooter extends React.Component {
 
           <div className="ft-bottom">
             <div className="ft-copy">
-              {intl.formatMessage(messages['footer.copyright'], { year: new Date().getFullYear() })}
+              {intl.formatMessage(messages['footer.copyright'], {
+                year: new Date().getFullYear(),
+                siteName: config.SITE_NAME,
+              })}
             </div>
 
             <div className="footer-social-icons">

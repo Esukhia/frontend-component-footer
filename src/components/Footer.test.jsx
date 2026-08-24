@@ -22,6 +22,7 @@ describe('Footer', () => {
   const config = {
     LMS_BASE_URL: 'http://localhost:18000',
     LOGO_TRADEMARK_URL: 'https://edx-cdn.org/v3/default/logo-trademark.svg',
+    SITE_NAME: 'edX',
   };
 
   beforeEach(() => {
@@ -38,8 +39,10 @@ describe('Footer', () => {
     );
 
     expect(screen.getByRole('contentinfo')).toBeInTheDocument();
-    expect(screen.getByAltText('edX Home Page')).toBeInTheDocument();
+    expect(screen.getByAltText('Powered by Open edX')).toBeInTheDocument();
     expect(screen.getByRole('contentinfo')).toHaveClass('site-footer');
+    expect(screen.getByText('edX', { selector: '.ft-brand-name' })).toBeInTheDocument();
+    expect(screen.getByText(`© ${new Date().getFullYear()} edX. All rights reserved.`)).toBeInTheDocument();
   });
 
   it('renders the footer with a language selector', () => {
@@ -102,7 +105,7 @@ describe('Footer', () => {
       </IntlProvider>,
     );
 
-    const logo = screen.getByRole('link', { name: 'edX Home Page' });
+    const logo = screen.getByRole('link', { name: 'edX Home' });
     const tooltip = screen.getByRole('tooltip');
     
     // Tooltip should be hidden by default
@@ -126,7 +129,7 @@ describe('Footer', () => {
       </IntlProvider>,
     );
 
-    const logo = screen.getByRole('link', { name: 'edX Home Page' });
+    const logo = screen.getByRole('link', { name: 'edX Home' });
     userEvent.click(logo);
 
     expect(sendTrackEvent).toHaveBeenCalledWith(EVENT_NAMES.FOOTER_LINK, {

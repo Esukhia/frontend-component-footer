@@ -13,7 +13,7 @@ import messages from './Footer.messages';
 import LanguageSelector from './LanguageSelector';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faApple, faFacebook, faGooglePlay, faInstagram, faXTwitter, faYoutube } from '@fortawesome/free-brands-svg-icons';
-ensureConfig(['LMS_BASE_URL', 'LOGO_TRADEMARK_URL'], 'Footer component');
+ensureConfig(['LMS_BASE_URL', 'LOGO_TRADEMARK_URL', 'SITE_NAME'], 'Footer component');
 const EVENT_NAMES = {
   FOOTER_LINK: 'edx.bi.footer.link'
 };
@@ -142,7 +142,7 @@ class SiteFooter extends React.Component {
       alt: intl.formatMessage(messages['footer.logo.altText'])
     }), /*#__PURE__*/React.createElement("span", {
       className: "ft-brand-name"
-    }, intl.formatMessage(messages['footer.brand.name'])), /*#__PURE__*/React.createElement("div", {
+    }, config.SITE_NAME), /*#__PURE__*/React.createElement("div", {
       className: `custom-tooltip ${isLogoHovered ? 'custom-tooltip-visible' : ''}`,
       role: "tooltip",
       "aria-hidden": !isLogoHovered
@@ -216,7 +216,8 @@ class SiteFooter extends React.Component {
     }, /*#__PURE__*/React.createElement("div", {
       className: "ft-copy"
     }, intl.formatMessage(messages['footer.copyright'], {
-      year: new Date().getFullYear()
+      year: new Date().getFullYear(),
+      siteName: config.SITE_NAME
     })), /*#__PURE__*/React.createElement("div", {
       className: "footer-social-icons"
     }, /*#__PURE__*/React.createElement("a", {
