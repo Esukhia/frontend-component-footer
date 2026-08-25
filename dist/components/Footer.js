@@ -13,7 +13,7 @@ import messages from './Footer.messages';
 import LanguageSelector from './LanguageSelector';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faApple, faFacebook, faGooglePlay, faInstagram, faXTwitter, faYoutube } from '@fortawesome/free-brands-svg-icons';
-ensureConfig(['LMS_BASE_URL', 'LOGO_TRADEMARK_URL', 'SITE_NAME'], 'Footer component');
+ensureConfig(['LMS_BASE_URL', 'LOGO_TRADEMARK_URL', 'SITE_NAME', 'CATALOG_MICROFRONTEND_URL'], 'Footer component');
 const EVENT_NAMES = {
   FOOTER_LINK: 'edx.bi.footer.link'
 };
@@ -175,7 +175,7 @@ class SiteFooter extends React.Component {
       onClick: this.externalLinkClickHandler,
       className: "footer-link"
     }, intl.formatMessage(messages['footer.learn.exploreCourses'])), /*#__PURE__*/React.createElement("a", {
-      href: "/catalog/#partner-carousel-title",
+      href: `${(config.CATALOG_MICROFRONTEND_URL || '').replace(/\/$/, '')}/#partner-carousel-title`,
       className: "footer-link"
     }, intl.formatMessage(messages['footer.learn.schoolsPartners'])), /*#__PURE__*/React.createElement("a", {
       href: PLACEHOLDER_URL,
