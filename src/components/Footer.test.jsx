@@ -23,6 +23,7 @@ describe('Footer', () => {
     LMS_BASE_URL: 'http://localhost:18000',
     LOGO_TRADEMARK_URL: 'https://edx-cdn.org/v3/default/logo-trademark.svg',
     SITE_NAME: 'edX',
+    CATALOG_MICROFRONTEND_URL: 'http://localhost:1998/catalog',
   };
 
   beforeEach(() => {

@@ -233,7 +233,7 @@ const messages = defineMessages({
   'footer.copyright': {
     id: 'footer.copyright',
     defaultMessage: '© {year} {siteName}. All rights reserved.',
-    description: 'Copyright text. siteName is MFE SITE_NAME (Tutor PLATFORM_NAME).'
+    description: 'Copyright text.'
   }
 });
 export default messages;

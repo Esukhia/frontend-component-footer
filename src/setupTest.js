@@ -14,6 +14,7 @@ process.env.ORDER_HISTORY_URL = 'localhost:1996/orders';
 process.env.REFRESH_ACCESS_TOKEN_ENDPOINT = 'http://localhost:18000/login_refresh';
 process.env.SEGMENT_KEY = 'segment_whoa';
 process.env.SITE_NAME = 'edX';
+process.env.CATALOG_MICROFRONTEND_URL = 'http://localhost:1998/catalog';
 process.env.USER_INFO_COOKIE_NAME = 'edx-user-info';
 process.env.LOGO_URL = 'https://edx-cdn.org/v3/default/logo.svg';
 process.env.LOGO_TRADEMARK_URL = 'https://edx-cdn.org/v3/default/logo-trademark.svg';

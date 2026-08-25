@@ -21,6 +21,7 @@ ensureConfig([
   'LMS_BASE_URL',
   'LOGO_TRADEMARK_URL',
   'SITE_NAME',
+  'CATALOG_MICROFRONTEND_URL',
 ], 'Footer component');
 
 const EVENT_NAMES = {
@@ -196,10 +197,13 @@ class SiteFooter extends React.Component {
                   href={`${config.LMS_BASE_URL}/courses`}
                   onClick={this.externalLinkClickHandler}
                   className="footer-link"
-                >
+                > 
   {intl.formatMessage(messages['footer.learn.exploreCourses'])}
 </a>
-                <a href={"/catalog/#partner-carousel-title"} className="footer-link">
+                <a
+                  href={`${(config.CATALOG_MICROFRONTEND_URL || '').replace(/\/$/, '')}/#partner-carousel-title`}
+                  className="footer-link"
+                >
                   {intl.formatMessage(messages['footer.learn.schoolsPartners'])}
                 </a>
                 <a href={PLACEHOLDER_URL} className="footer-link">
