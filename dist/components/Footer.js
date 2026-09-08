@@ -239,7 +239,7 @@ class SiteFooter extends React.Component {
     }, /*#__PURE__*/React.createElement(FontAwesomeIcon, {
       icon: faXTwitter
     })), /*#__PURE__*/React.createElement("a", {
-      href: "https://www.youtube.com/@SherabLMS",
+      href: "https://www.youtube.com/@webuddhistacademy",
       className: "social-icon",
       "aria-label": "YouTube"
     }, /*#__PURE__*/React.createElement(FontAwesomeIcon, {
