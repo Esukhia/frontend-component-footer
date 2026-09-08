@@ -14,20 +14,19 @@ import PropTypes from 'prop-types';
 import messages from './messages';
 import StudioFooterLogoSlot from '../../plugin-slots/StudioFooterLogoSlot';
 ensureConfig(['LMS_BASE_URL', 'MARKETING_SITE_BASE_URL', 'TERMS_OF_SERVICE_URL', 'PRIVACY_POLICY_URL', 'SUPPORT_EMAIL', 'SITE_NAME', 'STUDIO_BASE_URL', 'ENABLE_ACCESSIBILITY_PAGE'], 'Studio Footer component');
-const StudioFooter = _ref => {
-  let {
-    containerProps
-  } = _ref;
+const StudioFooter = ({
+  containerProps
+}) => {
   const intl = useIntl();
   const [isOpen, setIsOpen] = useState(false);
   const {
     config
   } = useContext(AppContext);
-  const _ref2 = containerProps || {},
+  const _ref = containerProps || {},
     {
       containerClassName
-    } = _ref2,
-    restContainerProps = _objectWithoutProperties(_ref2, _excluded);
+    } = _ref,
+    restContainerProps = _objectWithoutProperties(_ref, _excluded);
   return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("div", {
     className: "m-0 mt-6 row align-items-center justify-content-center"
   }, /*#__PURE__*/React.createElement("div", {

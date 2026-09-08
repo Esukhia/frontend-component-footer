@@ -182,8 +182,8 @@ const messages = defineMessages({
   },
   'footer.column.company': {
     id: 'footer.column.company',
-    defaultMessage: 'Company',
-    description: 'Title for the Company column of footer links.'
+    defaultMessage: 'Know More',
+    description: 'Title for the about us column of footer links.'
   },
   'footer.column.learn': {
     id: 'footer.column.learn',
