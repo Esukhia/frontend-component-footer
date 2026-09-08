@@ -259,7 +259,7 @@ class SiteFooter extends React.Component {
               <a href="https://x.com/WB_Academy_" className="social-icon" aria-label="X">
                 <FontAwesomeIcon icon={faXTwitter} />
               </a>
-              <a href="https://www.youtube.com/@SherabLMS" className="social-icon" aria-label="YouTube">
+              <a href="https://www.youtube.com/@webuddhistacademy" className="social-icon" aria-label="YouTube">
                 <FontAwesomeIcon icon={faYoutube} />
               </a>
             </div>
