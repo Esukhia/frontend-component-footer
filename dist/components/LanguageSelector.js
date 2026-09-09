@@ -34,13 +34,16 @@ const LanguageSelector = _ref => {
     className: "form-control-sm mx-2",
     name: "site-footer-language-select",
     defaultValue: intl.locale
-  }, options.map(({
-    value,
-    label
-  }) => /*#__PURE__*/React.createElement("option", {
-    key: value,
-    value: value
-  }, label))), /*#__PURE__*/React.createElement("button", {
+  }, options.map(_ref2 => {
+    let {
+      value,
+      label
+    } = _ref2;
+    return /*#__PURE__*/React.createElement("option", {
+      key: value,
+      value: value
+    }, label);
+  })), /*#__PURE__*/React.createElement("button", {
     "data-testid": "site-footer-submit-btn",
     className: "btn btn-outline-primary btn-sm",
     type: "submit"

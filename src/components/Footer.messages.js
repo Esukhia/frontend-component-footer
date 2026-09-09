@@ -181,10 +181,10 @@ const messages = defineMessages({
     defaultMessage: 'A global platform for authentic Buddhist education, connecting students with qualified teachers and institutions.',
     description: 'Short brand tagline shown in the footer brand column.',
   },
-  'footer.column.company': {
-    id: 'footer.column.company',
-    defaultMessage: 'Know More',
-    description: 'Title for the about us column of footer links.',
+  'footer.column.knowmore': {
+    id: 'footer.column.knowmore',
+    defaultMessage: 'Know more',
+    description: 'Title for the Know more column of footer links.',
   },
   'footer.column.learn': {
     id: 'footer.column.learn',
