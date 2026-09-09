@@ -163,9 +163,9 @@ class SiteFooter extends React.Component {
               </p>
             </div>
 
-            <div className={`ft-col ${this.isColumnOpen('company') ? 'is-open' : ''}`}>
-              {this.renderColumnTitle('company', 'footer.column.company')}
-              <nav className="ft-col-body" id="ft-col-company">
+            <div className={`ft-col ${this.isColumnOpen('knowmore') ? 'is-open' : ''}`}>
+              {this.renderColumnTitle('knowmore', 'footer.column.knowmore')}
+              <nav className="ft-col-body" id="ft-col-knowmore">
                 <a
                   href={`${config.LMS_BASE_URL}/about`}
                   onClick={this.externalLinkClickHandler}

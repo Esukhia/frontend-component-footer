@@ -149,10 +149,10 @@ class SiteFooter extends React.Component {
     }, intl.formatMessage(messages['footer.logo.hoverText']))), /*#__PURE__*/React.createElement("p", {
       className: "ft-tagline"
     }, intl.formatMessage(messages['footer.brand.tagline']))), /*#__PURE__*/React.createElement("div", {
-      className: `ft-col ${this.isColumnOpen('company') ? 'is-open' : ''}`
-    }, this.renderColumnTitle('company', 'footer.column.company'), /*#__PURE__*/React.createElement("nav", {
+      className: `ft-col ${this.isColumnOpen('knowmore') ? 'is-open' : ''}`
+    }, this.renderColumnTitle('knowmore', 'footer.column.knowmore'), /*#__PURE__*/React.createElement("nav", {
       className: "ft-col-body",
-      id: "ft-col-company"
+      id: "ft-col-knowmore"
     }, /*#__PURE__*/React.createElement("a", {
       href: `${config.LMS_BASE_URL}/about`,
       onClick: this.externalLinkClickHandler,
